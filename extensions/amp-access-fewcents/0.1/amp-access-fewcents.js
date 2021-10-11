@@ -14,38 +14,29 @@
  * limitations under the License.
  */
 
-import {CSS} from '../../../build/amp-access-fewcents-0.1.css';
-import {Layout, applyFillContent} from '#core/dom/layout';
+import {AmpAccessFewcents} from './fewcents-impl';
+import {Services} from '#service';
 
 const TAG = 'amp-access-fewcents';
 
-export class AmpAccessFewcents extends AMP.BaseElement {
-  /** @param {!AmpElement} element */
-  constructor(element) {
-    // DO NOT SUBMIT: This is example code only.
-    super(element);
-
-    /** @private {string} */
-    this.myText_ = 'hello world';
-
-    /** @private {?Element} */
-    this.container_ = null;
-  }
-
-  /** @override */
-  buildCallback() {
-    this.container_ = this.element.ownerDocument.createElement('div');
-    this.container_.textContent = this.myText_;
-    this.element.appendChild(this.container_);
-    applyFillContent(this.container_, /* replacedContent */ true);
-  }
-
-  /** @override */
-  isLayoutSupported(layout) {
-    return layout == Layout.RESPONSIVE;
-  }
-}
-
-AMP.extension(TAG, '0.1', (AMP) => {
-  AMP.registerElement(TAG, AmpAccessFewcents, CSS);
+AMP.extension(TAG, '0.1', function (AMP) {
+  AMP.registerServiceForDoc(
+    'fewcents',
+    /**
+     * @param {!../../../src/service/ampdoc-impl.AmpDoc} ampdoc
+     * @return {*} return type
+     */
+    function (ampdoc) {
+      const element = ampdoc.getHeadNode();
+      return Services.accessServiceForDoc(element).then((accessService) => {
+        const source = accessService.getVendorSource('fewcents');
+        const vendor = new AmpAccessFewcents(accessService, source);
+        const adapter = /** @type {
+            !../../amp-access/0.1/amp-access-vendor.AccessVendorAdapter
+          } */ (source.getAdapter());
+        adapter.registerVendor(vendor);
+        return vendor;
+      });
+    }
+  );
 });
