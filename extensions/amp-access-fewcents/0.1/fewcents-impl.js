@@ -99,9 +99,16 @@ export class AmpAccessFewcents {
    */
   renderPurchaseOverlay_() {
     const dialogContainer = this.getPaywallContainer_();
-
     this.innerContainer_ = this.createElement_('div');
     this.innerContainer_.className = TAG + '-container';
+
+    this.innerContainer_.appendChild(
+      this.createImageTag_(
+        'img',
+        'https://www.jagranimages.com/images/jagran-logo-2021.png',
+        '-imageTag'
+      )
+    );
 
     this.innerContainer_.appendChild(
       this.createAndAddProperty_(
@@ -127,6 +134,13 @@ export class AmpAccessFewcents {
       this.createAndAddProperty_('button', 'Unlock', '-purchase-button')
     );
 
+    this.innerContainer_.appendChild(
+      this.createImageTag_(
+        'img',
+        'https://dev.fewcents.co/static/media/powered-fewcents.5c8ee304.png',
+        '-imageTag'
+      )
+    );
     this.innerContainer_.appendChild(this.createRefRowElement_());
 
     dialogContainer.appendChild(this.innerContainer_);
@@ -173,6 +187,16 @@ export class AmpAccessFewcents {
     element.target = '_blank';
     element.textContent = text;
     element.rel = 'noopener noreferrer';
+    return element;
+  }
+
+  /**
+   * @private
+   */
+  createImageTag_(elementType, imageSrc, className) {
+    const element = this.createElement_(elementType);
+    element.className = TAG + className;
+    element.src = imageSrc;
     return element;
   }
 }
