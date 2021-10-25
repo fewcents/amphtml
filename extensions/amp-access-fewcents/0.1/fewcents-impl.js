@@ -163,6 +163,7 @@ export class AmpAccessFewcents {
     this.innerContainer_.appendChild(
       this.createImageTag_('img', this.i18n_['fcFewcentsImageRef'], '-imageTag')
     );
+
     this.innerContainer_.appendChild(this.createRefRowElement_());
 
     dialogContainer.appendChild(this.innerContainer_);
@@ -179,9 +180,14 @@ export class AmpAccessFewcents {
       this.createAnchorElement_('Terms', this.i18n_['fcTermsRef'])
     );
 
+    this.createPartitionbar_(refRow);
+
     refRow.appendChild(
       this.createAnchorElement_('Privacy', this.i18n_['fcPrivacyRef'])
     );
+
+    this.createPartitionbar_(refRow);
+
     refRow.appendChild(
       this.createAnchorElement_('Contact Us', this.i18n_['fcContactUsRef'])
     );
@@ -220,5 +226,14 @@ export class AmpAccessFewcents {
     element.className = TAG_SHORTHAND + className;
     element.src = imageSrc;
     return element;
+  }
+
+  /**
+   * @private
+   */
+  createPartitionbar_(refRow) {
+    refRow.appendChild(
+      this.createAndAddProperty_('span', '|', '-partition-bar')
+    );
   }
 }
