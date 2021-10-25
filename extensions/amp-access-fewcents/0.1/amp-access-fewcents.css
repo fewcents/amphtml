@@ -110,3 +110,8 @@
   width: 130px;
   height: auto;
 }
+
+.aaf-partition-bar {
+  font-size: 11px;
+  margin: 0px 4px;
+}
