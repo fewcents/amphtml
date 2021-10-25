@@ -47,16 +47,23 @@ const DEFAULT_MESSAGES = {
 export class AmpAccessFewcents {
   /**
    * @param {!../../amp-access/0.1/amp-access.AccessService} accessService
+   * @param {!../../amp-access/0.1/amp-access-source.AccessSource} accessSource
    */
-  constructor(accessService) {
+  constructor(accessService, accessSource) {
     /** @const */
     this.ampdoc = accessService.ampdoc;
+
+    /** @const @private {!../../amp-access/0.1/amp-access-source.AccessSource} */
+    this.accessSource_ = accessSource;
 
     /** @private {boolean} */
     this.containerEmpty_ = true;
 
     /** @private {?Node} */
     this.innerContainer_ = null;
+
+    /** @const @private {!JsonObject} */
+    this.fewcentsConfig_ = this.accessSource_.getAdapterConfig();
 
     /** @const @private {!../../../src/service/vsync-impl.Vsync} */
     this.vsync_ = Services.vsyncFor(this.ampdoc.win);
@@ -127,7 +134,7 @@ export class AmpAccessFewcents {
     this.innerContainer_.appendChild(
       this.createImageTag_(
         'img',
-        this.i18n_['fcPublisherImageRef'],
+        this.fewcentsConfig_['publisherLogoUrl'],
         '-imageTag'
       )
     );
