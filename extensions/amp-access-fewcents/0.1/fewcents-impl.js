@@ -23,6 +23,7 @@ import {Services} from '#service';
 import {CSS} from '../../../build/amp-access-fewcents-0.1.css';
 
 const TAG = 'amp-access-fewcents';
+const TAG_SHORTHAND = 'aaf';
 
 /**
  * @implements {../../amp-access/0.1/access-vendor.AccessVendor}
@@ -100,7 +101,7 @@ export class AmpAccessFewcents {
   renderPurchaseOverlay_() {
     const dialogContainer = this.getPaywallContainer_();
     this.innerContainer_ = this.createElement_('div');
-    this.innerContainer_.className = TAG + '-container';
+    this.innerContainer_.className = TAG_SHORTHAND + '-container';
 
     this.innerContainer_.appendChild(
       this.createImageTag_(
@@ -152,7 +153,7 @@ export class AmpAccessFewcents {
    */
   createRefRowElement_() {
     const refRow = this.createElement_('div');
-    refRow.className = TAG + '-refRow';
+    refRow.className = TAG_SHORTHAND + '-refRow';
     refRow.appendChild(
       this.createAnchorElement_('Terms', 'https://www.fewcents.co/terms')
     );
@@ -172,7 +173,7 @@ export class AmpAccessFewcents {
    */
   createAndAddProperty_(elementType, text, className) {
     const element = this.createElement_(elementType);
-    element.className = TAG + className;
+    element.className = TAG_SHORTHAND + className;
     element.textContent = text;
     return element;
   }
@@ -182,7 +183,7 @@ export class AmpAccessFewcents {
    */
   createAnchorElement_(text, href) {
     const element = this.createElement_('a');
-    element.className = TAG + '-refElements';
+    element.className = TAG_SHORTHAND + '-refElements';
     element.href = href;
     element.target = '_blank';
     element.textContent = text;
@@ -195,7 +196,7 @@ export class AmpAccessFewcents {
    */
   createImageTag_(elementType, imageSrc, className) {
     const element = this.createElement_(elementType);
-    element.className = TAG + className;
+    element.className = TAG_SHORTHAND + className;
     element.src = imageSrc;
     return element;
   }
