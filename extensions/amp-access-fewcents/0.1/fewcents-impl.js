@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import {dict} from '#core/types/object';
 import {installStylesForDoc} from '../../../src/style-installer';
 import {removeChildren} from '#core/dom';
 import {user} from '../../../src/log';
@@ -23,7 +24,22 @@ import {Services} from '#service';
 import {CSS} from '../../../build/amp-access-fewcents-0.1.css';
 
 const TAG = 'amp-access-fewcents';
+
 const TAG_SHORTHAND = 'aaf';
+
+const DEFAULT_MESSAGES = {
+  fcTitleText: 'Instant Access With Fewcents.',
+  fcPromptText: 'First 2 unlocks are free!',
+  fcButtonText: 'Unlock',
+  fcDefaultPrice: 'INR 50',
+  fcFewcentsImageRef:
+    'https://dev.fewcents.co/static/media/powered-fewcents.5c8ee304.png',
+  fcPublisherImageRef:
+    'https://www.jagranimages.com/images/jagran-logo-2021.png',
+  fcTermsRef: 'https://www.fewcents.co/terms',
+  fcPrivacyRef: 'https://www.fewcents.co/privacy',
+  fcContactUsRef: 'mailto:support@fewcents.co',
+};
 
 /**
  * @implements {../../amp-access/0.1/access-vendor.AccessVendor}
@@ -44,6 +60,11 @@ export class AmpAccessFewcents {
 
     /** @const @private {!../../../src/service/vsync-impl.Vsync} */
     this.vsync_ = Services.vsyncFor(this.ampdoc.win);
+
+    /** @private {!JsonObject} */
+    this.i18n_ = /** @type {!JsonObject} */ (
+      Object.assign(dict(), DEFAULT_MESSAGES, dict())
+    );
 
     // Install styles.
     installStylesForDoc(this.ampdoc, CSS, () => {}, false, TAG);
@@ -106,41 +127,41 @@ export class AmpAccessFewcents {
     this.innerContainer_.appendChild(
       this.createImageTag_(
         'img',
-        'https://www.jagranimages.com/images/jagran-logo-2021.png',
+        this.i18n_['fcPublisherImageRef'],
         '-imageTag'
       )
+    );
+
+    this.innerContainer_.appendChild(
+      this.createAndAddProperty_('header', this.i18n_['fcTitleText'], '-header')
     );
 
     this.innerContainer_.appendChild(
       this.createAndAddProperty_(
         'header',
-        'Instant Access With Fewcents.',
-        '-header'
+        this.i18n_['fcDefaultPrice'],
+        '-article-price'
       )
-    );
-
-    this.innerContainer_.appendChild(
-      this.createAndAddProperty_('header', 'INR 50.46', '-article-price')
     );
 
     this.innerContainer_.appendChild(
       this.createAndAddProperty_(
         'p',
-        'First 1 unlocks are free!',
+        this.i18n_['fcPromptText'],
         '-no-of-Unlock'
       )
     );
 
     this.innerContainer_.appendChild(
-      this.createAndAddProperty_('button', 'Unlock', '-purchase-button')
+      this.createAndAddProperty_(
+        'button',
+        this.i18n_['fcButtonText'],
+        '-purchase-button'
+      )
     );
 
     this.innerContainer_.appendChild(
-      this.createImageTag_(
-        'img',
-        'https://dev.fewcents.co/static/media/powered-fewcents.5c8ee304.png',
-        '-imageTag'
-      )
+      this.createImageTag_('img', this.i18n_['fcFewcentsImageRef'], '-imageTag')
     );
     this.innerContainer_.appendChild(this.createRefRowElement_());
 
@@ -155,14 +176,14 @@ export class AmpAccessFewcents {
     const refRow = this.createElement_('div');
     refRow.className = TAG_SHORTHAND + '-refRow';
     refRow.appendChild(
-      this.createAnchorElement_('Terms', 'https://www.fewcents.co/terms')
+      this.createAnchorElement_('Terms', this.i18n_['fcTermsRef'])
     );
 
     refRow.appendChild(
-      this.createAnchorElement_('Privacy', 'https://www.fewcents.co/privacy')
+      this.createAnchorElement_('Privacy', this.i18n_['fcPrivacyRef'])
     );
     refRow.appendChild(
-      this.createAnchorElement_('Contact Us', 'mailto:support@fewcents.co')
+      this.createAnchorElement_('Contact Us', this.i18n_['fcContactUsRef'])
     );
 
     return refRow;
