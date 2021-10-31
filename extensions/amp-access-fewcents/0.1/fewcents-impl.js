@@ -263,4 +263,11 @@ export class AmpAccessFewcents {
       this.createAndAddProperty_('span', '|', '-partition-bar')
     );
   }
+
+  /**
+   * @return {!Promise}
+   */
+  pingback() {
+    return Promise.resolve();
+  }
 }
