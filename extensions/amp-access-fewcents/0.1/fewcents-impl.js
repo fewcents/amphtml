@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+import {dev, user} from '../../../src/log';
 import {dict} from '#core/types/object';
 import {installStylesForDoc} from '../../../src/style-installer';
 import {removeChildren} from '#core/dom';
-import {user} from '../../../src/log';
 
 import {Services} from '#service';
 
@@ -62,6 +62,9 @@ export class AmpAccessFewcents {
     /** @private {?Node} */
     this.innerContainer_ = null;
 
+    /** @private {string} */
+    this.getAuthToken_ = () => this.getLocalStorage_('fewCentsAccessToken');
+
     /** @const @private {!JsonObject} */
     this.fewcentsConfig_ = this.accessSource_.getAdapterConfig();
 
@@ -81,8 +84,25 @@ export class AmpAccessFewcents {
    * @return {!Promise<!JsonObject>}
    */
   authorize() {
+    const authToken = this.getAuthToken_();
+    dev().info(TAG, 'Fewcents token n local storage', authToken);
     this.emptyContainer_().then(this.renderPurchaseOverlay_.bind(this));
     return {access: false};
+  }
+
+  /**
+   * @param {string} key
+   * @private
+   */
+  getLocalStorage_(key) {
+    // eslint-disable-next-line local/no-forbidden-terms
+    return Services.storageForDoc(this.ampdoc)
+      .then((storage) => {
+        return storage.get(key);
+      })
+      .then((loginToken) => {
+        return loginToken ? loginToken : null;
+      });
   }
 
   /**
