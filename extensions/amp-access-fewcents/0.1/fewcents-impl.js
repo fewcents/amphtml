@@ -160,11 +160,11 @@ export class AmpAccessFewcents {
       )
     );
 
+    this.innerContainer_.appendChild(this.createRefRowElement_());
+
     this.innerContainer_.appendChild(
       this.createImageTag_('img', this.i18n_['fcFewcentsImageRef'], '-imageTag')
     );
-
-    this.innerContainer_.appendChild(this.createRefRowElement_());
 
     dialogContainer.appendChild(this.innerContainer_);
     this.containerEmpty_ = false;

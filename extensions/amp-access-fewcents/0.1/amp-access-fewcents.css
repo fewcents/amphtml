@@ -24,7 +24,7 @@
 }
 
 .aaf-container {
-  padding: 16px;
+  padding: 16px 16px 0px 16px;
   height: auto;
   padding-right: 24px;
   flex: 1 1 0%;
@@ -32,7 +32,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 30px;
+  border-radius: 5px;
   font-family: Arial;
   font-weight: normal;
   box-shadow: 1px 2px 2px 2px grey;
@@ -48,7 +48,7 @@
 }
 
 .aaf-article-price {
-  padding: 15px 15px 0px 15px;
+  padding: 5px 15px 0px 15px;
   font-size: 24px;
   font-weight: 400;
   text-align: center;
@@ -59,14 +59,15 @@
   font-size: 13px;
   font-weight: 400;
   text-align: center;
-  margin-top: 15px;
-  color: hsla(0, 0%, 34%, 1);
+  margin-top: 5px;
+  color: rgb(8, 40, 154);
 }
 
 .aaf-purchase-button {
   font-size: 16px;
+  padding: 0px 25px;
   width: 7rem;
-  height: 45px;
+  height: 40px;
   width: 76%;
   background-color: #08289a;
   align-items: center;
@@ -75,13 +76,14 @@
   outline: none;
   color: white;
   max-width: 160px;
-  border-radius: 15px;
+  border-radius: 5px;
   border: 0;
 }
 
 .aaf-refRow {
   text-align: center;
   color: rgb(168, 163, 163);
+  margin-top: 10px;
 }
 
 .aaf-refElements {
@@ -107,7 +109,7 @@
 }
 
 .aaf-imageTag {
-  width: 130px;
+  width: 100px;
   height: auto;
 }
 
