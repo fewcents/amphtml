@@ -27,6 +27,15 @@ const TAG = 'amp-access-fewcents';
 
 const TAG_SHORTHAND = 'aaf';
 
+const AUTHORIZATION_TIMEOUT = 3000;
+
+const CONFIG_BASE_PATH = 'http://localhost:3001/authorize';
+
+const CONFIG_REQ_PARAMS =
+  'article_url=CANONICAL_URL' +
+  '&amp_reader_id=READER_ID' +
+  '&return_url=RETURN_URL';
+
 const DEFAULT_MESSAGES = {
   fcTitleText: 'Instant Access With Fewcents.',
   fcPromptText: 'First 2 unlocks are free!',
@@ -65,8 +74,22 @@ export class AmpAccessFewcents {
     /** @private {string} */
     this.getAuthToken_ = () => this.getLocalStorage_('fewCentsAccessToken');
 
+    /** @private {string} */
+    this.createLoggedOutBidBaseUrl_ =
+      CONFIG_BASE_PATH + '/createLoggedOutBid?' + CONFIG_REQ_PARAMS;
+
+    /** @private {string} */
+    this.createLoggedInBidBaseUrl_ =
+      CONFIG_BASE_PATH + '/createLoggedInBid?' + CONFIG_REQ_PARAMS;
+
     /** @const @private {!JsonObject} */
     this.fewcentsConfig_ = this.accessSource_.getAdapterConfig();
+
+    /** @const @private {!../../../src/service/timer-impl.Timer} */
+    this.timer_ = Services.timerFor(this.ampdoc.win);
+
+    /** @const @private {!../../../src/service/xhr-impl.Xhr} */
+    this.xhr_ = Services.xhrFor(this.ampdoc.win);
 
     /** @const @private {!../../../src/service/vsync-impl.Vsync} */
     this.vsync_ = Services.vsyncFor(this.ampdoc.win);
@@ -85,9 +108,46 @@ export class AmpAccessFewcents {
    */
   authorize() {
     const authToken = this.getAuthToken_();
-    dev().info(TAG, 'Fewcents token n local storage', authToken);
+    dev().info(TAG, 'Fewcents token in local storage', authToken);
+
+    this.getPaywallData_('randomToken').then((response) => {
+      dev().info(TAG, 'Authorize response', response);
+    });
+
     this.emptyContainer_().then(this.renderPurchaseOverlay_.bind(this));
     return {access: false};
+  }
+
+  /**
+   * function to get paywall data by making call to authorize endpoint
+   * @param {string} authToken
+   * @return {!Promise<Object>}
+   * @private
+   */
+  getPaywallData_(authToken) {
+    let authorizeUrl = this.createLoggedOutBidBaseUrl_;
+
+    // Updating authorize url if auth token is present
+    if (authToken) {
+      authorizeUrl = this.createLoggedInBidBaseUrl_ + '&authToken=' + authToken;
+    }
+
+    const urlPromise = this.accessSource_.buildUrl(
+      authorizeUrl,
+      /* useAuthData */ false
+    );
+
+    return urlPromise
+      .then((url) => {
+        return this.accessSource_.getLoginUrl(url);
+      })
+      .then((url) => {
+        return this.timer_
+          .timeoutPromise(AUTHORIZATION_TIMEOUT, this.xhr_.fetchJson(url, {}))
+          .then((res) => {
+            return res.json();
+          });
+      });
   }
 
   /**
