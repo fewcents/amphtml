@@ -213,7 +213,7 @@ export class AmpAccessFewcents {
    * @private
    */
   getPaywallContainer_() {
-    const id = TAG + '-dialog';
+    const id = this.fewcentsConfig_['paywallElementId'];
     const dialogContainer = this.ampdoc.getElementById(id);
     return user().assertElement(
       dialogContainer,
