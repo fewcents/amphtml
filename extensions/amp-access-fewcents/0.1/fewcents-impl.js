@@ -17,10 +17,10 @@
 import {dict} from '#core/types/object';
 import {installStylesForDoc} from '../../../src/style-installer';
 import {removeChildren} from '#core/dom';
-import {user} from '../../../src/log';
 
 import {Services} from '#service';
 import {parseUrlDeprecated} from '../../../src/url';
+import {user} from '../../../src/log';
 
 import {CSS} from '../../../build/amp-access-fewcents-0.1.css';
 
@@ -76,7 +76,13 @@ export class AmpAccessFewcents {
     /** @private {string} */
     this.fewCentsBidId_ = null;
 
-    /** @const @private {!JsonObject} */
+    /** @private {JsonObject} */
+    this.paywallSettings_ = null;
+
+    /** @private {string} */
+    this.loginDialogUrl = null;
+
+    /** @const @private {JsonObject} */
     this.fewcentsConfig_ = this.accessSource_.getAdapterConfig();
 
     /** @private {string} */
@@ -119,10 +125,14 @@ export class AmpAccessFewcents {
           throw err;
         }
 
-        return response.json().then(() => {
-          this.emptyContainer_().then(this.renderPurchaseOverlay_.bind(this));
-          return {access: false};
-        });
+        return response
+          .json()
+          .catch(() => undefined)
+          .then((responseJson) => {
+            this.parseAuthorizeResponse_(responseJson);
+            this.emptyContainer_().then(this.renderPurchaseOverlay_.bind(this));
+            return {access: false};
+          });
       }
     );
   }
@@ -177,6 +187,21 @@ export class AmpAccessFewcents {
             return res.json();
           });
       });
+  }
+
+  /**
+   * function to parse the response from authorize endpoint
+   * @param {json} response
+   * @private
+   */
+  parseAuthorizeResponse_(response) {
+    this.paywallSettings_ = response?.data?.paywallSettings;
+    this.loginDialogUrl = response?.data?.loginUrl;
+    const fewCentsBidId = response?.data?.fewCentsBidId;
+
+    if (fewCentsBidId) {
+      this.fewCentsBidId_ = fewCentsBidId;
+    }
   }
 
   /**
