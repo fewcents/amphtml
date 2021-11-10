@@ -72,15 +72,11 @@ export class AmpAccessFewcents {
     this.innerContainer_ = null;
 
     /** @private {string} */
-    this.getAuthToken_ = () => this.getLocalStorage_('fewCentsAccessToken');
+    this.fewCentsBidId_ = null;
 
     /** @private {string} */
-    this.createLoggedOutBidBaseUrl_ =
+    this.authorizeUrl_ =
       CONFIG_BASE_PATH + '/createLoggedOutBid?' + CONFIG_REQ_PARAMS;
-
-    /** @private {string} */
-    this.createLoggedInBidBaseUrl_ =
-      CONFIG_BASE_PATH + '/createLoggedInBid?' + CONFIG_REQ_PARAMS;
 
     /** @const @private {!JsonObject} */
     this.fewcentsConfig_ = this.accessSource_.getAdapterConfig();
@@ -107,10 +103,9 @@ export class AmpAccessFewcents {
    * @return {!Promise<!JsonObject>}
    */
   authorize() {
-    const authToken = this.getAuthToken_();
-    dev().info(TAG, 'Fewcents token in local storage', authToken);
+    dev().info(TAG, 'Fewcents Bid Id', this.fewCentsBidId_);
 
-    this.getPaywallData_('randomToken').then((response) => {
+    this.getPaywallData_().then((response) => {
       dev().info(TAG, 'Authorize response', response);
     });
 
@@ -120,17 +115,11 @@ export class AmpAccessFewcents {
 
   /**
    * function to get paywall data by making call to authorize endpoint
-   * @param {string} authToken
    * @return {!Promise<Object>}
    * @private
    */
-  getPaywallData_(authToken) {
-    let authorizeUrl = this.createLoggedOutBidBaseUrl_;
-
-    // Updating authorize url if auth token is present
-    if (authToken) {
-      authorizeUrl = this.createLoggedInBidBaseUrl_ + '&authToken=' + authToken;
-    }
+  getPaywallData_() {
+    const authorizeUrl = this.authorizeUrl_;
 
     const urlPromise = this.accessSource_.buildUrl(
       authorizeUrl,
@@ -147,21 +136,6 @@ export class AmpAccessFewcents {
           .then((res) => {
             return res.json();
           });
-      });
-  }
-
-  /**
-   * @param {string} key
-   * @private
-   */
-  getLocalStorage_(key) {
-    // eslint-disable-next-line local/no-forbidden-terms
-    return Services.storageForDoc(this.ampdoc)
-      .then((storage) => {
-        return storage.get(key);
-      })
-      .then((loginToken) => {
-        return loginToken ? loginToken : null;
       });
   }
 
