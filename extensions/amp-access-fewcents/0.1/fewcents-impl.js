@@ -20,6 +20,7 @@ import {installStylesForDoc} from '../../../src/style-installer';
 import {removeChildren} from '#core/dom';
 
 import {Services} from '#service';
+import {parseUrlDeprecated} from '../../../src/url';
 
 import {CSS} from '../../../build/amp-access-fewcents-0.1.css';
 
@@ -29,12 +30,13 @@ const TAG_SHORTHAND = 'aaf';
 
 const AUTHORIZATION_TIMEOUT = 3000;
 
-const CONFIG_BASE_PATH = 'http://localhost:3001/authorize';
+const CONFIG_BASE_PATH = 'http://localhost:3001/authorize/createLoggedOutBid?';
 
 const CONFIG_REQ_PARAMS =
-  'article_url=CANONICAL_URL' +
-  '&amp_reader_id=READER_ID' +
-  '&return_url=RETURN_URL';
+  'articleUrl=CANONICAL_URL' +
+  '&ampReaderId=READER_ID' +
+  '&returnUrl=RETURN_URL' +
+  '&category=paywall';
 
 const DEFAULT_MESSAGES = {
   fcTitleText: 'Instant Access With Fewcents.',
@@ -74,12 +76,11 @@ export class AmpAccessFewcents {
     /** @private {string} */
     this.fewCentsBidId_ = null;
 
-    /** @private {string} */
-    this.authorizeUrl_ =
-      CONFIG_BASE_PATH + '/createLoggedOutBid?' + CONFIG_REQ_PARAMS;
-
     /** @const @private {!JsonObject} */
     this.fewcentsConfig_ = this.accessSource_.getAdapterConfig();
+
+    /** @private {string} */
+    this.authorizeUrl_ = this.prepareAuthorizeUrl_();
 
     /** @const @private {!../../../src/service/timer-impl.Timer} */
     this.timer_ = Services.timerFor(this.ampdoc.win);
@@ -111,6 +112,28 @@ export class AmpAccessFewcents {
 
     this.emptyContainer_().then(this.renderPurchaseOverlay_.bind(this));
     return {access: false};
+  }
+
+  /**
+   * function to add request parameters for the authorize endpoint
+   * @return {string} authorize url
+   * @private
+   */
+  prepareAuthorizeUrl_() {
+    const accessKey = this.fewcentsConfig_['accessKey'];
+    const articleIdentifier = this.fewcentsConfig_['articleIdentifier'];
+    const {hostname} = parseUrlDeprecated();
+
+    return (
+      CONFIG_BASE_PATH +
+      CONFIG_REQ_PARAMS +
+      '&accessKey=' +
+      accessKey +
+      '&articleIdentifier=' +
+      articleIdentifier +
+      '&domain=' +
+      hostname
+    );
   }
 
   /**
