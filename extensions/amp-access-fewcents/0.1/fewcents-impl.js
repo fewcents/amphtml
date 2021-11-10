@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import {dev, user} from '../../../src/log';
 import {dict} from '#core/types/object';
 import {installStylesForDoc} from '../../../src/style-installer';
 import {removeChildren} from '#core/dom';
+import {user} from '../../../src/log';
 
 import {Services} from '#service';
 import {parseUrlDeprecated} from '../../../src/url';
@@ -104,14 +104,27 @@ export class AmpAccessFewcents {
    * @return {!Promise<!JsonObject>}
    */
   authorize() {
-    dev().info(TAG, 'Fewcents Bid Id', this.fewCentsBidId_);
+    return this.getPaywallData_().then(
+      (response) => {
+        this.emptyContainer_();
+        return {access: response.data.access};
+      },
+      (err) => {
+        if (!err || !err.response) {
+          throw err;
+        }
 
-    this.getPaywallData_().then((response) => {
-      dev().info(TAG, 'Authorize response', response);
-    });
+        const {response} = err;
+        if (response.status !== 402) {
+          throw err;
+        }
 
-    this.emptyContainer_().then(this.renderPurchaseOverlay_.bind(this));
-    return {access: false};
+        return response.json().then(() => {
+          this.emptyContainer_().then(this.renderPurchaseOverlay_.bind(this));
+          return {access: false};
+        });
+      }
+    );
   }
 
   /**
