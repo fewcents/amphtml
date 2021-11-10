@@ -142,7 +142,11 @@ export class AmpAccessFewcents {
    * @private
    */
   getPaywallData_() {
-    const authorizeUrl = this.authorizeUrl_;
+    let authorizeUrl = this.authorizeUrl_;
+
+    if (this.fewCentsBidId_) {
+      authorizeUrl = authorizeUrl + '&bidId=' + this.fewCentsBidId_;
+    }
 
     const urlPromise = this.accessSource_.buildUrl(
       authorizeUrl,
