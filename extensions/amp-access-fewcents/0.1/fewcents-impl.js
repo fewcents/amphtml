@@ -23,6 +23,7 @@ import {parseUrlDeprecated} from '../../../src/url';
 import {user} from '../../../src/log';
 
 import {CSS} from '../../../build/amp-access-fewcents-0.1.css';
+import {listen} from '../../../src/event-helper';
 
 const TAG = 'amp-access-fewcents';
 
@@ -74,7 +75,7 @@ export class AmpAccessFewcents {
     this.paywallSettings_ = null;
 
     /** @private {string} */
-    this.loginDialogUrl = null;
+    this.loginDialogUrl_ = null;
 
     /** @const @private {JsonObject} */
     this.fewcentsConfig_ = this.accessSource_.getAdapterConfig();
@@ -190,7 +191,7 @@ export class AmpAccessFewcents {
    */
   parseAuthorizeResponse_(response) {
     this.paywallSettings_ = response?.data?.paywallSettings;
-    this.loginDialogUrl = response?.data?.loginUrl;
+    this.loginDialogUrl_ = response?.data?.loginUrl;
     const fewCentsBidId = response?.data?.fewCentsBidId;
 
     if (fewCentsBidId) {
@@ -276,13 +277,14 @@ export class AmpAccessFewcents {
       )
     );
 
-    this.innerContainer_.appendChild(
-      this.createAndAddProperty_(
-        'button',
-        this.paywallSettings_.fcButtonText,
-        '-purchase-button'
-      )
-    );
+    const unlockButton = this.createElement_('button');
+    unlockButton.className = TAG_SHORTHAND + '-purchase-button';
+    unlockButton.textContent = this.paywallSettings_.fcButtonText;
+    this.unlockButtonListener_ = listen(unlockButton, 'click', (ev) => {
+      this.handlePurchase_(ev);
+    });
+
+    this.innerContainer_.appendChild(unlockButton);
 
     this.innerContainer_.appendChild(this.createRefRowElement_());
 
@@ -361,6 +363,22 @@ export class AmpAccessFewcents {
     );
   }
 
+  /**
+   * Function to open login dialog when click on unlock button
+   * @param {!Event} ev
+   * @private
+   */
+  handlePurchase_(ev) {
+    ev.preventDefault();
+    const urlPromise = this.accessSource_.buildUrl(
+      this.loginDialogUrl_,
+      /* useAuthData */ false
+    );
+
+    return urlPromise.then((url) => {
+      this.accessSource_.loginWithUrl(url);
+    });
+  }
   /**
    * @return {!Promise}
    */
