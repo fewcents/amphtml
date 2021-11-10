@@ -39,14 +39,8 @@ const CONFIG_REQ_PARAMS =
   '&category=paywall';
 
 const DEFAULT_MESSAGES = {
-  fcTitleText: 'Instant Access With Fewcents.',
-  fcPromptText: 'First 2 unlocks are free!',
-  fcButtonText: 'Unlock',
-  fcDefaultPrice: 'INR 50',
   fcFewcentsImageRef:
     'https://dev.fewcents.co/static/media/powered-fewcents.5c8ee304.png',
-  fcPublisherImageRef:
-    'https://www.jagranimages.com/images/jagran-logo-2021.png',
   fcTermsRef: 'https://www.fewcents.co/terms',
   fcPrivacyRef: 'https://www.fewcents.co/privacy',
   fcContactUsRef: 'mailto:support@fewcents.co',
@@ -259,13 +253,17 @@ export class AmpAccessFewcents {
     );
 
     this.innerContainer_.appendChild(
-      this.createAndAddProperty_('header', this.i18n_['fcTitleText'], '-header')
+      this.createAndAddProperty_(
+        'header',
+        this.paywallSettings_.fcTitleText,
+        '-header'
+      )
     );
 
     this.innerContainer_.appendChild(
       this.createAndAddProperty_(
         'header',
-        this.i18n_['fcDefaultPrice'],
+        this.paywallSettings_.fcCustomerPrice,
         '-article-price'
       )
     );
@@ -273,7 +271,7 @@ export class AmpAccessFewcents {
     this.innerContainer_.appendChild(
       this.createAndAddProperty_(
         'p',
-        this.i18n_['fcPromptText'],
+        this.paywallSettings_.fcPromptText,
         '-no-of-Unlock'
       )
     );
@@ -281,7 +279,7 @@ export class AmpAccessFewcents {
     this.innerContainer_.appendChild(
       this.createAndAddProperty_(
         'button',
-        this.i18n_['fcButtonText'],
+        this.paywallSettings_.fcButtonText,
         '-purchase-button'
       )
     );
