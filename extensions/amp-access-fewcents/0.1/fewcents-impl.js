@@ -52,6 +52,7 @@ const DEFAULT_MESSAGES = {
  */
 export class AmpAccessFewcents {
   /**
+   * @constructor
    * @param {!../../amp-access/0.1/amp-access.AccessService} accessService
    * @param {!../../amp-access/0.1/amp-access-source.AccessSource} accessSource
    */
@@ -94,7 +95,7 @@ export class AmpAccessFewcents {
 
     /** @private {!JsonObject} */
     this.i18n_ = /** @type {!JsonObject} */ (
-      Object.assign(dict(), DEFAULT_MESSAGES, dict())
+      Object.assign(dict(), DEFAULT_MESSAGES)
     );
 
     // Install styles.
@@ -102,24 +103,29 @@ export class AmpAccessFewcents {
   }
 
   /**
+   * Decides whether to show the paywall or not
    * @return {!Promise<!JsonObject>}
    */
   authorize() {
     return this.getPaywallData_().then(
       (response) => {
+        // removing the paywall if shown and showing the content
         this.emptyContainer_();
         return {access: response.data.access};
       },
       (err) => {
+        // showing the paywall
         if (!err || !err.response) {
           throw err;
         }
 
         const {response} = err;
+        // showing paywall when error code is 402 i.e payment required
         if (response.status !== 402) {
           throw err;
         }
 
+        // rendering the paywall
         return response
           .json()
           .catch(() => undefined)
@@ -133,7 +139,7 @@ export class AmpAccessFewcents {
   }
 
   /**
-   * function to add request parameters for the authorize endpoint
+   * add request parameters for the authorize endpoint
    * @return {string} authorize url
    * @private
    */
@@ -155,17 +161,19 @@ export class AmpAccessFewcents {
   }
 
   /**
-   * function to get paywall data by making call to authorize endpoint
+   * get paywall data by making call to authorize endpoint
    * @return {!Promise<Object>}
    * @private
    */
   getPaywallData_() {
     let authorizeUrl = this.authorizeUrl_;
 
+    // appending bidId in the authorize url during re-authorize
     if (this.fewCentsBidId_) {
       authorizeUrl = authorizeUrl + '&bidId=' + this.fewCentsBidId_;
     }
 
+    // replacing variable READER_Id, CANONICAL_URL in the authorize url
     const urlPromise = this.accessSource_.buildUrl(
       authorizeUrl,
       /* useAuthData */ false
@@ -173,6 +181,7 @@ export class AmpAccessFewcents {
 
     return urlPromise
       .then((url) => {
+        // replacing variable RETURN_URL in the authorize url
         return this.accessSource_.getLoginUrl(url);
       })
       .then((url) => {
@@ -185,7 +194,7 @@ export class AmpAccessFewcents {
   }
 
   /**
-   * function to parse the response from authorize endpoint
+   * parse the response from authorize endpoint
    * @param {json} response
    * @private
    */
@@ -194,6 +203,7 @@ export class AmpAccessFewcents {
     this.loginDialogUrl_ = response?.data?.loginUrl;
     const fewCentsBidId = response?.data?.fewCentsBidId;
 
+    // Setting the fewcentsBidId for re-authorize
     if (fewCentsBidId) {
       this.fewCentsBidId_ = fewCentsBidId;
     }
@@ -209,7 +219,8 @@ export class AmpAccessFewcents {
   }
 
   /**
-   * @return {!Element} element where paywall will be displayed
+   * return element on publisher's page where paywall will be displayed
+   * @return {!Element}
    * @private
    */
   getPaywallContainer_() {
@@ -222,6 +233,7 @@ export class AmpAccessFewcents {
   }
 
   /**
+   * Removes the paywall from the element on publisher's page where paywall is displayed
    * @private
    * @return {!Promise}
    */
@@ -238,11 +250,13 @@ export class AmpAccessFewcents {
   }
 
   /**
+   * Creates the paywall component
    * @private
    */
   renderPurchaseOverlay_() {
     const dialogContainer = this.getPaywallContainer_();
     this.innerContainer_ = this.createElement_('div');
+
     this.innerContainer_.className = TAG_SHORTHAND + '-container';
 
     this.innerContainer_.appendChild(
@@ -297,6 +311,7 @@ export class AmpAccessFewcents {
   }
 
   /**
+   * create reference elements on paywall
    * @private
    */
   createRefRowElement_() {
@@ -322,6 +337,7 @@ export class AmpAccessFewcents {
   }
 
   /**
+   * create elements on paywall
    * @private
    */
   createAndAddProperty_(elementType, text, className) {
@@ -332,6 +348,7 @@ export class AmpAccessFewcents {
   }
 
   /**
+   * create anchor elements on the paywall
    * @private
    */
   createAnchorElement_(text, href) {
@@ -345,6 +362,7 @@ export class AmpAccessFewcents {
   }
 
   /**
+   * create image tag elements on the paywall
    * @private
    */
   createImageTag_(elementType, imageSrc, className) {
@@ -355,6 +373,7 @@ export class AmpAccessFewcents {
   }
 
   /**
+   * create anchor elements on the paywall
    * @private
    */
   createPartitionbar_(refRow) {
@@ -364,7 +383,7 @@ export class AmpAccessFewcents {
   }
 
   /**
-   * Function to open login dialog when click on unlock button
+   * open login dialog when click on unlock button
    * @param {!Event} ev
    * @private
    */
@@ -379,6 +398,7 @@ export class AmpAccessFewcents {
       this.accessSource_.loginWithUrl(url);
     });
   }
+
   /**
    * @return {!Promise}
    */
