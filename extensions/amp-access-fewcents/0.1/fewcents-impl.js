@@ -288,14 +288,24 @@ export class AmpAccessFewcents {
 
     this.innerContainer_.appendChild(promptText);
 
-    this.innerContainer_.appendChild(
-      this.createAndAddProperty_(
-        'header',
-        this.paywallSettings_.fcCustomerPrice,
-        '-article-price'
-      )
+    // article price and unlock button div element
+    const priceAndButtonDiv = this.createElement_('div');
+    priceAndButtonDiv.className = TAG_SHORTHAND + '-price-btn-div';
+    this.innerContainer_.appendChild(priceAndButtonDiv);
+
+    // article price element
+    const price = this.createAndAddProperty_(
+      'div',
+      this.paywallSettings_.fcCustomerPrice,
+      '-article-price'
     );
 
+    priceAndButtonDiv.appendChild(price);
+
+    // unlock button div element
+    const buttonDiv = this.createAndAddProperty_('div', null, '-btn-div');
+
+    // unlock button element
     const unlockButton = this.createElement_('button');
     unlockButton.className = TAG_SHORTHAND + '-purchase-button';
     unlockButton.textContent = this.paywallSettings_.fcButtonText;
@@ -303,13 +313,24 @@ export class AmpAccessFewcents {
       this.handlePurchase_(ev);
     });
 
-    this.innerContainer_.appendChild(unlockButton);
+    buttonDiv.appendChild(unlockButton);
+    priceAndButtonDiv.appendChild(buttonDiv);
 
-    this.innerContainer_.appendChild(this.createRefRowElement_());
+    // div element for reference row and fewcents logo
+    const bottomDiv = this.createAndAddProperty_('div', null, '-bottom-div');
 
-    this.innerContainer_.appendChild(
-      this.createImageTag_('img', this.i18n_['fcFewcentsImageRef'], '-imageTag')
+    // reference row for terms and conditions
+    const refRow = this.createRefRowElement_();
+    bottomDiv.appendChild(refRow);
+
+    // publisher logo
+    const fewcentsLogo = this.createImageTag_(
+      'img',
+      this.i18n_['fcFewcentsImageRef'],
+      '-fewcents-image-tag'
     );
+    bottomDiv.appendChild(fewcentsLogo);
+    this.innerContainer_.appendChild(bottomDiv);
 
     dialogContainer.appendChild(this.innerContainer_);
     this.containerEmpty_ = false;

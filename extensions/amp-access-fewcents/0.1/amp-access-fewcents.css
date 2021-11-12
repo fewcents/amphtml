@@ -48,6 +48,11 @@
   height: 30px;
 }
 
+.aaf-fewcents-image-tag {
+  width: 100px;
+  height: 45px;
+}
+
 .aaf-headerText {
   text-align: center;
   font-size: 17px;
@@ -65,35 +70,54 @@
   color: rgb(8, 40, 154);
 }
 
+.aaf-price-btn-div {
+  display: flex;
+  place-content: center space-evenly;
+  align-items: center;
+  margin: 12px auto 0px;
+  max-width: 250px;
+}
+
 .aaf-article-price {
-  padding: 5px 15px 0px 15px;
   font-size: 24px;
   font-weight: 400;
   text-align: center;
-  color: hsla(0, 94%, 0%, 1);
+  margin-top: 5px;
+  color: rgb(0, 0, 0);
+}
+
+.aaf-btn-div {
+  line-height: 1.2;
+  margin-top: 0.5 rem;
+  text-align: center;
 }
 
 .aaf-purchase-button {
-  font-size: 16px;
-  padding: 0px 25px;
-  width: 7rem;
+  line-height: 1.2;
+  cursor: pointer;
+  color: white;
+  border: 0;
+  background: rgb(8, 40, 154);
+  width: 100%;
+  border-radius: 5px;
   height: 40px;
-  width: 76%;
-  background-color: #08289a;
   align-items: center;
   justify-content: center;
-  -webkit-box-align: center;
+  font-size: 16px;
   outline: none;
-  color: white;
+  margin: auto;
+  padding: 0px 25px;
   max-width: 160px;
-  border-radius: 5px;
-  border: 0;
+}
+
+.aaf-bottom-div {
+  display: flex;
+  align-items: center;
 }
 
 .aaf-refRow {
   text-align: center;
   color: rgb(168, 163, 163);
-  margin-top: 10px;
 }
 
 .aaf-refElements {
