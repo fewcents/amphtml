@@ -279,19 +279,20 @@ export class AmpAccessFewcents {
 
     this.innerContainer_.appendChild(headerText);
 
+    // div element for prompt text
+    const promptText = this.createAndAddProperty_(
+      'div',
+      this.paywallSettings_.fcPromptText,
+      '-fc-prompt-text'
+    );
+
+    this.innerContainer_.appendChild(promptText);
+
     this.innerContainer_.appendChild(
       this.createAndAddProperty_(
         'header',
         this.paywallSettings_.fcCustomerPrice,
         '-article-price'
-      )
-    );
-
-    this.innerContainer_.appendChild(
-      this.createAndAddProperty_(
-        'p',
-        this.paywallSettings_.fcPromptText,
-        '-no-of-Unlock'
       )
     );
 
