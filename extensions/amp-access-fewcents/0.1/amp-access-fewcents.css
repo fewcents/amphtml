@@ -24,15 +24,20 @@
 }
 
 .aaf-container {
-  padding: 16px 16px 0px 16px;
   height: auto;
-  padding-right: 24px;
-  flex: 1 1 0%;
-  background-color: white;
+  width: 70%;
+  max-width: 540px;
+  align-items: center;
+  margin: auto;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  padding: 5px 15px;
+  background-color: rgb(232, 236, 236);
+  border: 0px;
   border-radius: 5px;
+  opacity: 1;
+  transition: opacity 0.5s ease 0s;
   font-family: Arial;
   font-weight: normal;
   box-shadow: 1px 2px 2px 2px grey;
@@ -97,15 +102,6 @@
   #aaf-dialog {
     width: 350px;
   }
-}
-
-.aaf-div {
-  width: 100%;
-  background-color: lemonchiffon;
-  height: 350px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .aaf-imageTag {
