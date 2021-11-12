@@ -36,8 +36,7 @@ const CONFIG_BASE_PATH = 'http://localhost:3001/authorize/createLoggedOutBid?';
 const CONFIG_REQ_PARAMS =
   'articleUrl=CANONICAL_URL' +
   '&ampReaderId=READER_ID' +
-  '&returnUrl=RETURN_URL' +
-  '&category=paywall';
+  '&returnUrl=RETURN_URL';
 
 const DEFAULT_MESSAGES = {
   fcFewcentsImageRef:
@@ -146,6 +145,8 @@ export class AmpAccessFewcents {
   prepareAuthorizeUrl_() {
     const accessKey = this.fewcentsConfig_['accessKey'];
     const articleIdentifier = this.fewcentsConfig_['articleIdentifier'];
+    const category = this.fewcentsConfig_['category'];
+
     const {hostname} = parseUrlDeprecated();
 
     return (
@@ -153,6 +154,8 @@ export class AmpAccessFewcents {
       CONFIG_REQ_PARAMS +
       '&accessKey=' +
       accessKey +
+      '&category=' +
+      category +
       '&articleIdentifier=' +
       articleIdentifier +
       '&domain=' +
@@ -224,7 +227,7 @@ export class AmpAccessFewcents {
    * @private
    */
   getPaywallContainer_() {
-    const id = this.fewcentsConfig_['paywallElementId'];
+    const id = this.fewcentsConfig_['contentSelector'];
     const dialogContainer = this.ampdoc.getElementById(id);
     return user().assertElement(
       dialogContainer,
