@@ -259,24 +259,25 @@ export class AmpAccessFewcents {
   renderPurchaseOverlay_() {
     const dialogContainer = this.getPaywallContainer_();
     this.innerContainer_ = this.createElement_('div');
-
     this.innerContainer_.className = TAG_SHORTHAND + '-container';
 
-    this.innerContainer_.appendChild(
-      this.createImageTag_(
-        'img',
-        this.fewcentsConfig_['publisherLogoUrl'],
-        '-imageTag'
-      )
+    // image element for the publisher logo
+    const publisherLogo = this.createImageTag_(
+      'img',
+      this.fewcentsConfig_['publisherLogoUrl'],
+      '-imageTag'
     );
 
-    this.innerContainer_.appendChild(
-      this.createAndAddProperty_(
-        'header',
-        this.paywallSettings_.fcTitleText,
-        '-header'
-      )
+    this.innerContainer_.appendChild(publisherLogo);
+
+    // div element for the header text
+    const headerText = this.createAndAddProperty_(
+      'div',
+      this.paywallSettings_.fcTitleText,
+      '-headerText'
     );
+
+    this.innerContainer_.appendChild(headerText);
 
     this.innerContainer_.appendChild(
       this.createAndAddProperty_(
