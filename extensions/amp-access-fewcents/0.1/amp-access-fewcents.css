@@ -33,7 +33,7 @@
   display: flex;
   flex-direction: column;
   padding: 5px 15px;
-  background-color: rgb(232, 236, 236);
+  background-color: rgb(255, 255, 255);
   border: 0px;
   border-radius: 5px;
   opacity: 1;
@@ -41,6 +41,7 @@
   font-family: Arial;
   font-weight: normal;
   box-shadow: 1px 2px 2px 2px grey;
+  overflow: hidden;
 }
 
 .aaf-imageTag {
@@ -83,6 +84,7 @@
   font-weight: 400;
   text-align: center;
   margin-top: 5px;
+  margin-right: 10px;
   color: rgb(0, 0, 0);
 }
 
@@ -125,6 +127,7 @@
   font-size: 11px;
   text-align: center;
   color: rgb(168, 163, 163);
+  white-space: nowrap;
 }
 
 @media (min-width: 786px) {
