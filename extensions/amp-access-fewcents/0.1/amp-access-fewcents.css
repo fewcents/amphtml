@@ -117,6 +117,7 @@
 
 .aaf-refRow {
   text-align: center;
+  word-break: break-word;
   color: rgb(168, 163, 163);
 }
 
