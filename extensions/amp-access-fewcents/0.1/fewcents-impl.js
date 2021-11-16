@@ -207,9 +207,8 @@ export class AmpAccessFewcents {
   parseAuthorizeResponse_(response) {
     const purchaseOptionsList = response?.data?.purchaseOptions;
     this.purchaseOptions_ = purchaseOptionsList?.[0];
-
     this.loginDialogUrl_ = response?.data?.loginUrl;
-    const fewCentsBidId = response?.data?.fewCentsBidId;
+    const fewCentsBidId = response?.data?.bidId;
 
     // Setting the fewcentsBidId for re-authorize
     if (fewCentsBidId) {
