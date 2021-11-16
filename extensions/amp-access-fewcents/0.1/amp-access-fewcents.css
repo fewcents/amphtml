@@ -45,13 +45,11 @@
 }
 
 .aaf-imageTag {
-  width: 100px;
-  height: 30px;
+  max-height: 30px;
 }
 
 .aaf-fewcents-image-tag {
-  width: 100px;
-  height: 45px;
+  max-height: 45px;
 }
 
 .aaf-headerText {
