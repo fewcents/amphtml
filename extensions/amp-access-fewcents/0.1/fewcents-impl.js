@@ -39,6 +39,9 @@ const CONFIG_REQ_PARAMS =
   '&returnUrl=RETURN_URL';
 
 const DEFAULT_MESSAGES = {
+  fcTitleText: 'Instant Access With Fewcents.',
+  fcPromptText: 'Prompted Message',
+  fcButtonText: 'Unlock',
   fcFewcentsImageRef:
     'https://dev.fewcents.co/static/media/powered-fewcents.5c8ee304.png',
   fcTermsRef: 'https://www.fewcents.co/terms',
@@ -273,7 +276,7 @@ export class AmpAccessFewcents {
     // div element for the header text
     const headerText = this.createAndAddProperty_(
       'div',
-      this.paywallSettings_.fcTitleText,
+      this.i18n_['fcTitleText'],
       '-headerText'
     );
 
@@ -282,7 +285,7 @@ export class AmpAccessFewcents {
     // div element for prompt text
     const promptText = this.createAndAddProperty_(
       'div',
-      this.paywallSettings_.fcPromptText,
+      this.i18n_['fcPromptText'],
       '-fc-prompt-text'
     );
 
@@ -308,7 +311,7 @@ export class AmpAccessFewcents {
     // unlock button element
     const unlockButton = this.createElement_('button');
     unlockButton.className = TAG_SHORTHAND + '-purchase-button';
-    unlockButton.textContent = this.paywallSettings_.fcButtonText;
+    unlockButton.textContent = this.i18n_['fcButtonText'];
     this.unlockButtonListener_ = listen(unlockButton, 'click', (ev) => {
       this.handlePurchase_(ev);
     });
