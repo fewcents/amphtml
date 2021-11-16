@@ -31,7 +31,7 @@ const TAG_SHORTHAND = 'aaf';
 
 const AUTHORIZATION_TIMEOUT = 3000;
 
-const CONFIG_BASE_PATH = 'http://localhost:3001/authorize/createLoggedOutBid?';
+const CONFIG_BASE_PATH = 'https://api.hounds.fewcents.co/v1/amp/authorizeBid?';
 
 const CONFIG_REQ_PARAMS =
   'articleUrl=CANONICAL_URL' +
@@ -75,7 +75,7 @@ export class AmpAccessFewcents {
     this.fewCentsBidId_ = null;
 
     /** @private {JsonObject} */
-    this.paywallSettings_ = null;
+    this.purchaseOptions_ = null;
 
     /** @private {string} */
     this.loginDialogUrl_ = null;
@@ -205,7 +205,9 @@ export class AmpAccessFewcents {
    * @private
    */
   parseAuthorizeResponse_(response) {
-    this.paywallSettings_ = response?.data?.paywallSettings;
+    const purchaseOptionsList = response?.data?.purchaseOptions;
+    this.purchaseOptions_ = purchaseOptionsList?.[0];
+
     this.loginDialogUrl_ = response?.data?.loginUrl;
     const fewCentsBidId = response?.data?.fewCentsBidId;
 
@@ -299,7 +301,7 @@ export class AmpAccessFewcents {
     // article price element
     const price = this.createAndAddProperty_(
       'div',
-      this.paywallSettings_.fcCustomerPrice,
+      this.purchaseOptions_?.price?.price,
       '-article-price'
     );
 
