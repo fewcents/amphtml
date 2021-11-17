@@ -109,35 +109,43 @@ export class AmpAccessFewcents {
    * @return {!Promise<!JsonObject>}
    */
   authorize() {
-    return this.getPaywallData_().then(
-      (response) => {
-        // removing the paywall if shown and showing the content
+    return this.getPaywallData_()
+      .then(
+        (response) => {
+          // removing the paywall if shown and showing the content
+          this.emptyContainer_();
+          return {access: response.data.access};
+        },
+        (err) => {
+          // showing the paywall
+          if (!err || !err.response) {
+            throw err;
+          }
+
+          const {response} = err;
+          // showing paywall when error code is 402 i.e payment required
+          if (response.status !== 402) {
+            throw err;
+          }
+
+          // rendering the paywall
+          return response
+            .json()
+            .catch(() => undefined)
+            .then((responseJson) => {
+              this.parseAuthorizeResponse_(responseJson);
+              this.emptyContainer_().then(
+                this.renderPurchaseOverlay_.bind(this)
+              );
+              return {access: false};
+            });
+        }
+      )
+      .catch(() => {
+        // showing the content when authorize endpoint fails
         this.emptyContainer_();
-        return {access: response.data.access};
-      },
-      (err) => {
-        // showing the paywall
-        if (!err || !err.response) {
-          throw err;
-        }
-
-        const {response} = err;
-        // showing paywall when error code is 402 i.e payment required
-        if (response.status !== 402) {
-          throw err;
-        }
-
-        // rendering the paywall
-        return response
-          .json()
-          .catch(() => undefined)
-          .then((responseJson) => {
-            this.parseAuthorizeResponse_(responseJson);
-            this.emptyContainer_().then(this.renderPurchaseOverlay_.bind(this));
-            return {access: false};
-          });
-      }
-    );
+        return {access: true};
+      });
   }
 
   /**
