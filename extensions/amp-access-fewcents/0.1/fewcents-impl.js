@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-import {dict} from '#core/types/object';
-import {installStylesForDoc} from '../../../src/style-installer';
 import {removeChildren} from '#core/dom';
+import {dict} from '#core/types/object';
 
 import {Services} from '#service';
-import {parseUrlDeprecated} from '../../../src/url';
-import {user} from '../../../src/log';
+
+import {listen} from '#utils/event-helper';
+import {user} from '#utils/log';
 
 import {CSS} from '../../../build/amp-access-fewcents-0.1.css';
-import {listen} from '../../../src/event-helper';
+import {installStylesForDoc} from '../../../src/style-installer';
+import {parseUrlDeprecated} from '../../../src/url';
 
 const TAG = 'amp-access-fewcents';
 
