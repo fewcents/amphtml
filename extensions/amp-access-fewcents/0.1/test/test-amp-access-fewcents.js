@@ -16,6 +16,8 @@
 
 import {AmpAccessFewcents} from '../fewcents-impl';
 
+const TAG = 'amp-access-fewcents';
+
 const paywallResponse = {
   success: true,
   message: 'Amp article price returned with unlock url.',
@@ -47,10 +49,10 @@ describes.realWin(
     },
   },
   (env) => {
-    // let win;
+    let win;
     // let doc;
     // let html;
-    // let document,
+    let document;
     let ampdoc;
     let accessSource;
     let accessService;
@@ -60,13 +62,18 @@ describes.realWin(
     let vendor;
 
     beforeEach(() => {
-      // win = env.win;
+      win = env.win;
       ampdoc = env.ampdoc;
-      // document = win.document;
+      document = win.document;
 
       fewcentsConfig = {
-        articleTitleSelector: '#laterpay-test-title',
-        region: 'us',
+        publisherLogoUrl:
+          'https://www.jagranimages.com/images/jagran-logo-2021.png',
+        contentSelector: 'amp-access-fewcents-dialog',
+        primaryColor: '',
+        accessKey: 'localhost',
+        category: 'paywall',
+        articleIdentifier: 'mockArticleIdentifier',
       };
 
       accessSource = {
@@ -169,6 +176,39 @@ describes.realWin(
         return vendor.authorize().then((res) => {
           expect(res.access).to.be.true;
         });
+      });
+    });
+
+    describe('Unlocking an article', () => {
+      let container;
+
+      beforeEach(() => {
+        container = document.createElement('div');
+        container.id = TAG + '-dialog';
+        document.body.appendChild(container);
+        vendor.i18n_ = {};
+        vendor.renderPurchaseOverlay_();
+      });
+
+      afterEach(() => {
+        container.parentNode.removeChild(container);
+        accessSourceMock.verify();
+        xhrMock.verify();
+      });
+
+      it('should check clicking on unlock button', (done) => {
+        accessSourceMock
+          .expects('buildUrl')
+          .returns(Promise.resolve('https://apllink'))
+          .once();
+
+        accessSourceMock.expects('loginWithUrl').once();
+
+        const clickEv = new Event('click');
+        container.querySelector('button').dispatchEvent(clickEv);
+        setTimeout(() => {
+          done();
+        }, 500);
       });
     });
   }
