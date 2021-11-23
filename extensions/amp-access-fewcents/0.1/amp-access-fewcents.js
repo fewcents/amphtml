@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import {AmpAccessFewcents} from './fewcents-impl';
 import {Services} from '#service';
+
+import {AmpAccessFewcents} from './fewcents-impl';
 
 const TAG = 'amp-access-fewcents';
 
