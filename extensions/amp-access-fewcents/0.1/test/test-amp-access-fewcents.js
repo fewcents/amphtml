@@ -18,6 +18,8 @@ import {AmpAccessFewcents} from '../fewcents-impl';
 
 const TAG = 'amp-access-fewcents';
 
+const TAG_SHORTHAND = 'aaf';
+
 const paywallResponse = {
   success: true,
   message: 'Amp article price returned with unlock url.',
@@ -209,6 +211,62 @@ describes.realWin(
         setTimeout(() => {
           done();
         }, 500);
+      });
+    });
+
+    describe('Create paywall overlay', () => {
+      let container;
+
+      beforeEach(() => {
+        container = document.createElement('div');
+        container.id = TAG + '-dialog';
+        document.body.appendChild(container);
+        vendor.i18n_ = {
+          fcTitleText: 'Instant Access With Fewcents.',
+          fcPromptText: 'Prompted Message',
+          fcButtonText: 'Unlock',
+          fcFewcentsImageRef:
+            'https://dev.fewcents.co/static/media/powered-fewcents.5c8ee304.png',
+          fcTermsRef: 'https://www.fewcents.co/terms',
+        };
+
+        vendor.purchaseOptions_ = {
+          price: {currency: 'INR', price: '881'},
+          unlockUrl:
+            'https://wallet.hounds.fewcents.co?login_source=amp…53A8000%252Fexamples%252Famp-access-fewcents.html',
+        };
+        vendor.renderPurchaseOverlay_();
+      });
+
+      afterEach(() => {
+        container.parentNode.removeChild(container);
+      });
+
+      it('renders price', () => {
+        const priceDiv = container.querySelector(
+          '.' + TAG_SHORTHAND + '-article-price'
+        );
+
+        expect(priceDiv).to.not.be.null;
+        expect(parseInt(priceDiv.textContent, 10)).to.equal(881);
+      });
+
+      it('renders unlock button', () => {
+        const unlockButton = container.querySelector(
+          '.' + TAG_SHORTHAND + '-purchase-button'
+        );
+
+        expect(unlockButton).to.not.be.null;
+        expect(unlockButton.textContent).to.equal('Unlock');
+      });
+
+      it('renders title div', () => {
+        const headerDiv = container.querySelector(
+          '.' + TAG_SHORTHAND + '-headerText'
+        );
+
+        expect(headerDiv).to.not.be.null;
+        expect(headerDiv.textContent).to.equal('Instant Access With Fewcents.');
       });
     });
   }
