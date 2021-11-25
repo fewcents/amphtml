@@ -109,7 +109,35 @@ describes.realWin(
         env.sandbox.stub(vendor, 'renderPurchaseOverlay_');
       });
 
+      afterEach(() => {
+        vendor.fewCentsBidId_ = null;
+      });
+
       it('should show the premium content', () => {
+        accessSourceMock
+          .expects('buildUrl')
+          .returns(Promise.resolve(''))
+          .once();
+
+        xhrMock
+          .expects('fetchJson')
+          .returns(
+            Promise.resolve({
+              json() {
+                return Promise.resolve({access: true});
+              },
+            })
+          )
+          .once();
+
+        return vendor.authorize().then((resp) => {
+          expect(resp.access).to.be.true;
+          expect(emptyContainerStub.called).to.be.true;
+        });
+      });
+
+      it('should show the premium content along with passing bidId', () => {
+        vendor.fewCentsBidId_ = 92602;
         accessSourceMock
           .expects('buildUrl')
           .returns(Promise.resolve(''))
