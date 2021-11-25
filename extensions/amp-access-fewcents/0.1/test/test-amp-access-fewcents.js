@@ -235,6 +235,14 @@ describes.realWin(
       });
     });
 
+    describe('pingback', () => {
+      it('pingback returns undefined', () => {
+        return vendor.pingback().then((resp) => {
+          expect(resp).to.be.undefined;
+        });
+      });
+    });
+
     describe('Unlocking an article', () => {
       let container;
 
