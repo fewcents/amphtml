@@ -331,5 +331,34 @@ describes.realWin(
         expect(headerDiv.textContent).to.equal('Instant Access With Fewcents.');
       });
     });
+
+    describe('Checks empty container function', () => {
+      let container;
+
+      beforeEach(() => {
+        vendor.vsync_ = {
+          mutate: (callback) => {
+            callback();
+          },
+          mutatePromise: (callback) => {
+            callback();
+            return Promise.resolve();
+          },
+        };
+        container = document.createElement('div');
+        container.id = TAG + '-dialog';
+        document.body.appendChild(container);
+        vendor.renderPurchaseOverlay_();
+        vendor.emptyContainer_();
+      });
+
+      it('should check price element is not present', () => {
+        const priceDiv = container.querySelector(
+          '.' + TAG_SHORTHAND + '-article-price'
+        );
+
+        expect(priceDiv).to.be.null;
+      });
+    });
   }
 );
