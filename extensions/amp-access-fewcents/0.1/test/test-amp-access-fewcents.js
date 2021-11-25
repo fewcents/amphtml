@@ -207,6 +207,32 @@ describes.realWin(
           expect(res.access).to.be.true;
         });
       });
+
+      it('should show the paywall : when authorize response does not have the response key', () => {
+        accessSourceMock
+          .expects('buildUrl')
+          .returns(Promise.resolve('https://builturl'))
+          .once();
+
+        xhrMock
+          .expects('fetchJson')
+          .returns(
+            Promise.reject({
+              newResponse: {
+                status: 402,
+                json() {
+                  return Promise.resolve(paywallResponse);
+                },
+              },
+            })
+          )
+          .once();
+
+        emptyContainerStub.returns(Promise.resolve());
+        return vendor.authorize().then((res) => {
+          expect(res.access).to.be.true;
+        });
+      });
     });
 
     describe('Unlocking an article', () => {
