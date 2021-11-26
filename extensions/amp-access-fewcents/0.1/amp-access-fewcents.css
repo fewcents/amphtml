@@ -48,6 +48,23 @@
   max-height: 30px;
 }
 
+.aaf-flashimage-div {
+  position: relative;
+}
+
+.aaf-flash-image {
+  height: 60%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.aaf-flash-text {
+  position: absolute;
+  font-size: 15px;
+  left: 33%;
+  bottom: 23%;
+}
+
 .aaf-fewcents-image-tag {
   max-height: 45px;
 }

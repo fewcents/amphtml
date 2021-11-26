@@ -39,10 +39,13 @@ const CONFIG_REQ_PARAMS =
 
 const DEFAULT_MESSAGES = {
   fcTitleText: 'Instant Access With Fewcents.',
+  fcFlashText: 'Thank you. Paywall Unlocked',
   fcPromptText: 'Prompted Message',
   fcButtonText: 'Unlock',
   fcFewcentsImageRef:
     'https://dev.fewcents.co/static/media/powered-fewcents.5c8ee304.png',
+  fcFewcentsFlashRefImage:
+    '	https://dev.fewcents.co/static/media/artwork-unlocked-lg.27cdaf0e.svg',
   fcTermsRef: 'https://www.fewcents.co/terms',
   fcPrivacyRef: 'https://www.fewcents.co/privacy',
   fcContactUsRef: 'mailto:support@fewcents.co',
@@ -69,6 +72,9 @@ export class AmpAccessFewcents {
 
     /** @private {?Node} */
     this.innerContainer_ = null;
+
+    /** @private {?Node} */
+    this.dialogContainer_ = null;
 
     /** @private {string} */
     this.fewCentsBidId_ = null;
@@ -112,8 +118,16 @@ export class AmpAccessFewcents {
       .then(
         (response) => {
           // removing the paywall if shown and showing the content
-          this.emptyContainer_();
-          return {access: response.data.access};
+          this.emptyContainer_().then(() => {
+            this.renderFlash_();
+
+            //removing the flash message after 3 sec
+            setTimeout(() => {
+              this.emptyContainer_();
+            }, 3000);
+          });
+
+          return {access: response.data.access, flash: true};
         },
         (err) => {
           // showing the paywall
@@ -266,11 +280,45 @@ export class AmpAccessFewcents {
   }
 
   /**
+   * Renders success success flash image in the paywall component
+   * @private
+   */
+  renderFlash_() {
+    this.innerContainer_ = this.createElement_('div');
+    this.innerContainer_.className = TAG_SHORTHAND + '-container';
+
+    const imageDiv = this.createElement_('div');
+    imageDiv.className = TAG_SHORTHAND + '-flashimage-div';
+
+    // image element for the publisher logo
+    const fewcentsFlashLogo = this.createImageTag_(
+      'img',
+      this.i18n_['fcFewcentsFlashRefImage'],
+      '-flash-image'
+    );
+
+    imageDiv.appendChild(fewcentsFlashLogo);
+
+    const flashText = this.createAndAddProperty_(
+      'div',
+      this.i18n_['fcFlashText'],
+      '-flash-text'
+    );
+
+    flashText.className = TAG_SHORTHAND + '-flash-text';
+    imageDiv.appendChild(flashText);
+
+    this.innerContainer_.appendChild(imageDiv);
+    this.dialogContainer_.appendChild(this.innerContainer_);
+    this.containerEmpty_ = false;
+  }
+
+  /**
    * Creates the paywall component
    * @private
    */
   renderPurchaseOverlay_() {
-    const dialogContainer = this.getPaywallContainer_();
+    this.dialogContainer_ = this.getPaywallContainer_();
     this.innerContainer_ = this.createElement_('div');
     this.innerContainer_.className = TAG_SHORTHAND + '-container';
 
@@ -345,7 +393,7 @@ export class AmpAccessFewcents {
     bottomDiv.appendChild(fewcentsLogo);
     this.innerContainer_.appendChild(bottomDiv);
 
-    dialogContainer.appendChild(this.innerContainer_);
+    this.dialogContainer_.appendChild(this.innerContainer_);
     this.containerEmpty_ = false;
   }
 
