@@ -35,9 +35,7 @@ const AUTHORIZATION_TIMEOUT = 3000;
 const CONFIG_BASE_PATH = 'https://api.hounds.fewcents.co/v1/amp/authorizeBid?';
 
 const CONFIG_REQ_PARAMS =
-  'articleUrl=CANONICAL_URL' +
-  '&ampReaderId=READER_ID' +
-  '&returnUrl=RETURN_URL';
+  'articleUrl=SOURCE_URL&ampReaderId=READER_ID&returnUrl=RETURN_URL';
 
 const DEFAULT_MESSAGES = {
   fcTitleText: 'Instant Access With Fewcents.',
@@ -132,7 +130,9 @@ export class AmpAccessFewcents {
           // rendering the paywall
           return response
             .json()
-            .catch(() => undefined)
+            .catch(() => {
+              throw err;
+            })
             .then((responseJson) => {
               this.parseAuthorizeResponse_(responseJson);
               this.emptyContainer_().then(
