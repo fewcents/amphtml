@@ -39,11 +39,12 @@ const CONFIG_REQ_PARAMS =
 
 const DEFAULT_MESSAGES = {
   fcTitleText: 'Instant Access With Fewcents.',
-  fcFlashText: 'Thank you. Paywall Unlocked',
+  fcFlashText: 'Thank you for the payment!',
   fcPromptText: 'Prompted Message',
   fcButtonText: 'Unlock',
-  fcFewcentsImageRef:
+  fcPoweredImageRef:
     'https://dev.fewcents.co/static/media/powered-fewcents.5c8ee304.png',
+  fcImageRef: 'https://dev.fewcents.co/static/media/logo.0fa2844b.png',
   fcFlashRefImage:
     '	https://dev.fewcents.co/static/media/artwork-unlocked-lg.27cdaf0e.svg',
   fcFlashHorizontalImage:
@@ -307,9 +308,35 @@ export class AmpAccessFewcents {
       )
     );
 
+    imageDiv.appendChild(this.createFlashText_());
     this.innerContainer_.appendChild(imageDiv);
     this.dialogContainer_.appendChild(this.innerContainer_);
     this.containerEmpty_ = false;
+  }
+
+  /**
+   * Creates text and fc logo on the flash image
+   * @private
+   */
+  createFlashText_() {
+    const flashTextDiv = this.createElement_('div');
+    flashTextDiv.className = TAG_SHORTHAND + '-flash-text-div';
+
+    const flashText = this.createAndAddProperty_(
+      'h2',
+      this.i18n_['fcFlashText'],
+      '-flash-text'
+    );
+
+    flashTextDiv.appendChild(flashText);
+    flashTextDiv.appendChild(
+      this.createImageTag_(
+        'img',
+        this.i18n_['fcImageRef'],
+        '-flash-fewcents-image-tag'
+      )
+    );
+    return flashTextDiv;
   }
 
   /**
@@ -386,7 +413,7 @@ export class AmpAccessFewcents {
     // publisher logo
     const fewcentsLogo = this.createImageTag_(
       'img',
-      this.i18n_['fcFewcentsImageRef'],
+      this.i18n_['fcPoweredImageRef'],
       '-fewcents-image-tag'
     );
     bottomDiv.appendChild(fewcentsLogo);

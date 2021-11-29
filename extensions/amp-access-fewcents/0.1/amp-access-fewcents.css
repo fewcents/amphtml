@@ -79,11 +79,24 @@
   display: none;
 }
 
-.aaf-flash-text {
+.aaf-flash-text-div {
   position: absolute;
-  font-size: 1.3vw;
-  left: 31%;
-  bottom: 23%;
+  left: 0px;
+  bottom: 24px;
+  width: 100%;
+}
+
+.aaf-flash-text {
+  font-size: 18px;
+  font-weight: 400;
+  overflow-wrap: normal;
+  line-height: 1.2;
+  color: rgb(59, 59, 59);
+  padding: 0px 10px;
+}
+
+.aaf-flash-fewcents-image-tag {
+  max-height: 32px;
 }
 
 .aaf-fewcents-image-tag {
@@ -173,7 +186,7 @@
   }
 
   .aaf-flash-container {
-    width: 264px;
+    width: 298px;
     max-width: 95%;
   }
 
