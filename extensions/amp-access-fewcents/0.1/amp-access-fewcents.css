@@ -112,7 +112,7 @@
   margin-top: 10px;
 }
 
-.aaf-fc-prompt-text {
+.aaf-already-bought {
   font-size: 13px;
   font-weight: 500;
   text-align: center;
@@ -132,7 +132,6 @@
   font-size: 24px;
   font-weight: 400;
   text-align: center;
-  margin-top: 5px;
   margin-right: 10px;
   color: rgb(0, 0, 0);
 }
