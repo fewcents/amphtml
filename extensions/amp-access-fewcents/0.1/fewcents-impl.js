@@ -44,8 +44,10 @@ const DEFAULT_MESSAGES = {
   fcButtonText: 'Unlock',
   fcFewcentsImageRef:
     'https://dev.fewcents.co/static/media/powered-fewcents.5c8ee304.png',
-  fcFewcentsFlashRefImage:
+  fcFlashRefImage:
     '	https://dev.fewcents.co/static/media/artwork-unlocked-lg.27cdaf0e.svg',
+  fcFlashHorizontalImage:
+    '	https://dev.fewcents.co/static/media/artwork-unlocked-sm.ec9b10de.svg',
   fcTermsRef: 'https://www.fewcents.co/terms',
   fcPrivacyRef: 'https://www.fewcents.co/privacy',
   fcContactUsRef: 'mailto:support@fewcents.co',
@@ -285,28 +287,25 @@ export class AmpAccessFewcents {
    */
   renderFlash_() {
     this.innerContainer_ = this.createElement_('div');
-    this.innerContainer_.className = TAG_SHORTHAND + '-container';
+    this.innerContainer_.className = TAG_SHORTHAND + '-flash-container';
 
     const imageDiv = this.createElement_('div');
-    imageDiv.className = TAG_SHORTHAND + '-flashimage-div';
-
-    // image element for the publisher logo
-    const fewcentsFlashLogo = this.createImageTag_(
-      'img',
-      this.i18n_['fcFewcentsFlashRefImage'],
-      '-flash-image'
+    imageDiv.className = TAG_SHORTHAND + '-flash-image-div';
+    imageDiv.appendChild(
+      this.createImageTag_(
+        'img',
+        this.i18n_['fcFlashRefImage'],
+        '-hor-flash-image'
+      )
     );
 
-    imageDiv.appendChild(fewcentsFlashLogo);
-
-    const flashText = this.createAndAddProperty_(
-      'div',
-      this.i18n_['fcFlashText'],
-      '-flash-text'
+    imageDiv.appendChild(
+      this.createImageTag_(
+        'img',
+        this.i18n_['fcFlashHorizontalImage'],
+        '-flash-image'
+      )
     );
-
-    flashText.className = TAG_SHORTHAND + '-flash-text';
-    imageDiv.appendChild(flashText);
 
     this.innerContainer_.appendChild(imageDiv);
     this.dialogContainer_.appendChild(this.innerContainer_);
