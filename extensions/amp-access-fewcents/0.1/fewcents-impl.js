@@ -40,7 +40,7 @@ const CONFIG_REQ_PARAMS =
 const DEFAULT_MESSAGES = {
   fcTitleText: 'Instant Access With Fewcents.',
   fcFlashText: 'Thank you for the payment!',
-  fcPromptText: 'Prompted Message',
+  fcPromptText: 'I already bought this',
   fcButtonText: 'Unlock',
   fcPoweredImageRef:
     'https://dev.fewcents.co/static/media/powered-fewcents.5c8ee304.png',
@@ -87,6 +87,12 @@ export class AmpAccessFewcents {
 
     /** @private {string} */
     this.loginDialogUrl_ = null;
+
+    /** @private {?Function} */
+    this.unlockButtonListener_ = null;
+
+    /** @private {?Function} */
+    this.alreadyPurchasedListener_ = null;
 
     /** @const @private {JsonObject} */
     this.fewcentsConfig_ = this.accessSource_.getAdapterConfig();
@@ -275,6 +281,14 @@ export class AmpAccessFewcents {
       return Promise.resolve();
     }
 
+    if (this.unlockButtonListener_) {
+      this.unlockButtonListener_ = null;
+    }
+
+    if (this.alreadyPurchasedListener_) {
+      this.alreadyPurchasedListener_ = null;
+    }
+
     return this.vsync_.mutatePromise(() => {
       this.containerEmpty_ = true;
       this.innerContainer_ = null;
@@ -366,14 +380,18 @@ export class AmpAccessFewcents {
 
     this.innerContainer_.appendChild(headerText);
 
-    // div element for prompt text
-    const promptText = this.createAndAddProperty_(
-      'div',
+    // anchor element for prompt text
+    const alreadyBought = this.createAnchorElement_(
       this.i18n_['fcPromptText'],
-      '-fc-prompt-text'
+      this.loginDialogUrl_,
+      '-already-bought'
     );
 
-    this.innerContainer_.appendChild(promptText);
+    this.alreadyPurchasedListener_ = listen(alreadyBought, 'click', (ev) => {
+      this.handlePurchase_(ev);
+    });
+
+    this.innerContainer_.appendChild(alreadyBought);
 
     // article price and unlock button div element
     const priceAndButtonDiv = this.createElement_('div');
@@ -431,19 +449,31 @@ export class AmpAccessFewcents {
     const refRow = this.createElement_('div');
     refRow.className = TAG_SHORTHAND + '-refRow';
     refRow.appendChild(
-      this.createAnchorElement_('Terms', this.i18n_['fcTermsRef'])
+      this.createAnchorElement_(
+        'Terms',
+        this.i18n_['fcTermsRef'],
+        '-refElements'
+      )
     );
 
     this.createPartitionbar_(refRow);
 
     refRow.appendChild(
-      this.createAnchorElement_('Privacy', this.i18n_['fcPrivacyRef'])
+      this.createAnchorElement_(
+        'Privacy',
+        this.i18n_['fcPrivacyRef'],
+        '-refElements'
+      )
     );
 
     this.createPartitionbar_(refRow);
 
     refRow.appendChild(
-      this.createAnchorElement_('Contact Us', this.i18n_['fcContactUsRef'])
+      this.createAnchorElement_(
+        'Contact Us',
+        this.i18n_['fcContactUsRef'],
+        '-refElements'
+      )
     );
 
     return refRow;
@@ -464,9 +494,9 @@ export class AmpAccessFewcents {
    * create anchor elements on the paywall
    * @private
    */
-  createAnchorElement_(text, href) {
+  createAnchorElement_(text, href, className) {
     const element = this.createElement_('a');
-    element.className = TAG_SHORTHAND + '-refElements';
+    element.className = TAG_SHORTHAND + className;
     element.href = href;
     element.target = '_blank';
     element.textContent = text;
