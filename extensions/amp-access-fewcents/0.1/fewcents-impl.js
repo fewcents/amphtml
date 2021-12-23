@@ -127,15 +127,7 @@ export class AmpAccessFewcents {
       .then(
         (response) => {
           // removing the paywall if shown and showing the content
-          this.emptyContainer_().then(() => {
-            this.renderFlash_();
-
-            //removing the flash message after 3 sec
-            setTimeout(() => {
-              this.emptyContainer_();
-            }, 3000);
-          });
-
+          this.emptyContainer_();
           return {access: response.data.access, flash: true};
         },
         (err) => {
@@ -294,63 +286,6 @@ export class AmpAccessFewcents {
       this.innerContainer_ = null;
       removeChildren(this.getPaywallContainer_());
     });
-  }
-
-  /**
-   * Renders success success flash image in the paywall component
-   * @private
-   */
-  renderFlash_() {
-    this.innerContainer_ = this.createElement_('div');
-    this.innerContainer_.className = TAG_SHORTHAND + '-flash-container';
-
-    const imageDiv = this.createElement_('div');
-    imageDiv.className = TAG_SHORTHAND + '-flash-image-div';
-    imageDiv.appendChild(
-      this.createImageTag_(
-        'img',
-        this.i18n_['fcFlashRefImage'],
-        '-hor-flash-image'
-      )
-    );
-
-    imageDiv.appendChild(
-      this.createImageTag_(
-        'img',
-        this.i18n_['fcFlashHorizontalImage'],
-        '-flash-image'
-      )
-    );
-
-    imageDiv.appendChild(this.createFlashText_());
-    this.innerContainer_.appendChild(imageDiv);
-    this.dialogContainer_.appendChild(this.innerContainer_);
-    this.containerEmpty_ = false;
-  }
-
-  /**
-   * Creates text and fc logo on the flash image
-   * @private
-   */
-  createFlashText_() {
-    const flashTextDiv = this.createElement_('div');
-    flashTextDiv.className = TAG_SHORTHAND + '-flash-text-div';
-
-    const flashText = this.createAndAddProperty_(
-      'h2',
-      this.i18n_['fcFlashText'],
-      '-flash-text'
-    );
-
-    flashTextDiv.appendChild(flashText);
-    flashTextDiv.appendChild(
-      this.createImageTag_(
-        'img',
-        this.i18n_['fcImageRef'],
-        '-flash-fewcents-image-tag'
-      )
-    );
-    return flashTextDiv;
   }
 
   /**
