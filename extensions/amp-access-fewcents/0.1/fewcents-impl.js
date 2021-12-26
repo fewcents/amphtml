@@ -74,31 +74,59 @@ export class AmpAccessFewcents {
     /** @const @private {!../../../src/service/timer-impl.Timer} */
     this.timer_ = Services.timerFor(this.ampdoc.win);
 
+    /** @private {JsonObject} */
+    this.purchaseOptions_ = null;
+
+    /** @private {string} */
+    this.loginDialogUrl_ = null;
+
     installStylesForDoc(this.ampdoc, CSS, () => {}, false, TAG);
   }
 
   /**
-   * Decides to show the paywall or publisher content by calling authorize endpoint
+   * Decides whether to show the paywall or not
    * @return {!Promise<!JsonObject>}
    */
   authorize() {
-    return this.getPaywallData_().then(
-      // [TODO] : More edge cases to be added with actual call
-      (response) => {
-        // Removing the paywall from dialogContainer
+    return this.getPaywallData_()
+      .then(
+        (response) => {
+          // removing the paywall if shown and showing the content
+          this.emptyContainer_();
+          return {access: response.data.access};
+        },
+        (err) => {
+          // showing the paywall
+          if (!err || !err.response) {
+            throw err;
+          }
+
+          const {response} = err;
+          // showing paywall when error code is 402 i.e payment required
+          if (response.status !== 402) {
+            throw err;
+          }
+
+          // rendering the paywall
+          return response
+            .json()
+            .catch(() => {
+              throw err;
+            })
+            .then((responseJson) => {
+              this.parseAuthorizeResponse_(responseJson);
+              this.emptyContainer_().then(
+                this.renderPurchaseOverlay_.bind(this)
+              );
+              return {access: false};
+            });
+        }
+      )
+      .catch(() => {
+        // showing the content when authorize endpoint fails
         this.emptyContainer_();
-        // Showing the publisher's content
-        return {access: response.data.access};
-      },
-      (err) => {
-        // Rendering the paywall when request promise is rejected
-        const {response} = err;
-        return response.json().then(() => {
-          this.emptyContainer_().then(this.renderPurchaseOverlay_.bind(this));
-          return {access: false};
-        });
-      }
-    );
+        return {access: true};
+      });
   }
 
   /**
@@ -124,6 +152,23 @@ export class AmpAccessFewcents {
       '&domain=' +
       hostname
     );
+  }
+
+  /**
+   * Parse the response from authorize endpoint
+   * @param {json} response
+   * @private
+   */
+  parseAuthorizeResponse_(response) {
+    const purchaseOptionsList = response?.data?.purchaseOptions;
+    this.purchaseOptions_ = purchaseOptionsList?.[0];
+    this.loginDialogUrl_ = response?.data?.loginUrl;
+    const fewCentsBidId = response?.data?.bidId;
+
+    // Setting the fewcentsBidId for re-authorize
+    if (fewCentsBidId) {
+      this.fewCentsBidId_ = fewCentsBidId;
+    }
   }
 
   /**
