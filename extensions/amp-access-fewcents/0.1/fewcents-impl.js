@@ -17,9 +17,14 @@
 import {createElementWithAttributes} from '#core/dom';
 import {dict} from '#core/types/object';
 
-import {dev, user} from '#utils/log';
+import {Services} from '#service';
+
+import {user} from '#utils/log';
+
+import {parseUrlDeprecated} from 'src/url';
 
 import {
+  AUTHORIZATION_TIMEOUT,
   CONFIG_BASE_PATH,
   DEFAULT_MESSAGES,
   TAG,
@@ -60,6 +65,15 @@ export class AmpAccessFewcents {
     /** @private {!JsonObject} */
     this.i18n_ = Object.assign(dict(), DEFAULT_MESSAGES);
 
+    /** @private {string} */
+    this.fewCentsBidId_ = null;
+
+    /** @const @private {!../../../src/service/xhr-impl.Xhr} */
+    this.xhr_ = Services.xhrFor(this.ampdoc.win);
+
+    /** @const @private {!../../../src/service/timer-impl.Timer} */
+    this.timer_ = Services.timerFor(this.ampdoc.win);
+
     installStylesForDoc(this.ampdoc, CSS, () => {}, false, TAG);
   }
 
@@ -93,9 +107,23 @@ export class AmpAccessFewcents {
    * @private
    */
   prepareAuthorizeUrl_() {
-    // [TODO]: Actual implementation
-    dev().fine(TAG, 'Publishers config', this.fewcentsConfig_);
-    return;
+    const accessKey = this.fewcentsConfig_['accessKey'];
+    const articleIdentifier = this.fewcentsConfig_['articleIdentifier'];
+    const category = this.fewcentsConfig_['category'];
+
+    const {hostname} = parseUrlDeprecated();
+
+    return (
+      CONFIG_BASE_PATH +
+      '&accessKey=' +
+      accessKey +
+      '&category=' +
+      category +
+      '&articleIdentifier=' +
+      articleIdentifier +
+      '&domain=' +
+      hostname
+    );
   }
 
   /**
@@ -104,18 +132,31 @@ export class AmpAccessFewcents {
    * @private
    */
   getPaywallData_() {
-    // [TODO]: Actual API implementation using fetch
-    dev().fine(TAG, 'authorizeUrl', this.authorizeUrl_, CONFIG_BASE_PATH);
+    let authorizeUrl = this.authorizeUrl_;
 
-    // Currently, case only for showing the paywall later in future depend upon API response
-    return Promise.reject({
-      response: {
-        status: 402,
-        json() {
-          return Promise.resolve({success: true});
-        },
-      },
-    });
+    // appending bidId in the authorize url during re-authorize
+    if (this.fewCentsBidId_) {
+      authorizeUrl = authorizeUrl + '&bidId=' + this.fewCentsBidId_;
+    }
+
+    // replacing variable READER_Id, CANONICAL_URL in the authorize url
+    const urlPromise = this.accessSource_.buildUrl(
+      authorizeUrl,
+      /* useAuthData */ false
+    );
+
+    return urlPromise
+      .then((url) => {
+        // replacing variable RETURN_URL in the authorize url
+        return this.accessSource_.getLoginUrl(url);
+      })
+      .then((url) => {
+        return this.timer_
+          .timeoutPromise(AUTHORIZATION_TIMEOUT, this.xhr_.fetchJson(url, {}))
+          .then((res) => {
+            return res.json();
+          });
+      });
   }
 
   /**
