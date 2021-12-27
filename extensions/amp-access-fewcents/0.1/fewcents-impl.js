@@ -341,6 +341,10 @@ export class AmpAccessFewcents {
       }
     );
 
+    // Reference row for terms and conditions
+    const refRow = this.createRefRowElement_();
+    bottomDiv.appendChild(refRow);
+
     // Creating fewcents logo for the paywall
     const fewcentsLogo = createElementWithAttributes(
       this.ampdoc.win.document,
@@ -355,6 +359,72 @@ export class AmpAccessFewcents {
 
     this.dialogContainer_.appendChild(this.innerContainer_);
     this.containerEmpty_ = false;
+  }
+
+  /**
+   * Create reference elements on paywall
+   * @private
+   */
+  createRefRowElement_() {
+    const refRow = createElementWithAttributes(
+      this.ampdoc.win.document,
+      'div',
+      {
+        class: TAG_SHORTHAND + '-refRow',
+      }
+    );
+
+    const terms = createElementWithAttributes(this.ampdoc.win.document, 'a', {
+      class: TAG_SHORTHAND + '-refElements',
+      href: this.i18n_['fcTermsRef'],
+      target: '_blank',
+      rel: 'noopener noreferrer',
+    });
+    terms.textContent = 'Terms';
+    refRow.appendChild(terms);
+    this.createPartitionbar_(refRow);
+
+    const privacy = createElementWithAttributes(this.ampdoc.win.document, 'a', {
+      class: TAG_SHORTHAND + '-refElements',
+      href: this.i18n_['fcPrivacyRef'],
+      target: '_blank',
+      rel: 'noopener noreferrer',
+    });
+    privacy.textContent = 'Privacy';
+    refRow.appendChild(privacy);
+    this.createPartitionbar_(refRow);
+
+    const contactUs = createElementWithAttributes(
+      this.ampdoc.win.document,
+      'a',
+      {
+        class: TAG_SHORTHAND + '-refElements',
+        href: this.i18n_['fcContactUsRef'],
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      }
+    );
+    contactUs.textContent = 'Contact Us';
+    refRow.appendChild(contactUs);
+    this.createPartitionbar_(refRow);
+
+    return refRow;
+  }
+
+  /**
+   * Create partition bar for the reference elements
+   * @private
+   */
+  createPartitionbar_(refRow) {
+    const partitionBar = createElementWithAttributes(
+      this.ampdoc.win.document,
+      'span',
+      {
+        class: TAG_SHORTHAND + '-partition-bar',
+      }
+    );
+    partitionBar.textContent = '|';
+    refRow.appendChild(partitionBar);
   }
 
   /**

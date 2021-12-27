@@ -88,3 +88,22 @@
 .aaf-fewcents-image-tag {
   max-height: 45px;
 }
+
+.aaf-refRow {
+  text-align: center;
+  word-break: break-word;
+  color: rgb(168, 163, 163);
+}
+
+.aaf-refElements {
+  padding: 4px;
+  font-size: 11px;
+  text-align: center;
+  color: rgb(168, 163, 163);
+  white-space: nowrap;
+}
+
+.aaf-partition-bar {
+  font-size: 11px;
+  margin: 0px 4px;
+}
