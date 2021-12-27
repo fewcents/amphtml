@@ -285,6 +285,37 @@ export class AmpAccessFewcents {
     });
     this.innerContainer_.appendChild(alreadyBought);
 
+    // 'div' element for article price and unlock button
+    const priceAndButtonDiv = createElementWithAttributes(
+      this.ampdoc.win.document,
+      'div',
+      {
+        class: TAG_SHORTHAND + '-price-btn-div',
+      }
+    );
+    this.innerContainer_.appendChild(priceAndButtonDiv);
+
+    // Article price element
+    const articlePrice = createElementWithAttributes(
+      this.ampdoc.win.document,
+      'div',
+      {
+        class: TAG_SHORTHAND + '-article-price',
+      }
+    );
+
+    articlePrice.textContent = this.purchaseOptions_?.price?.price;
+    priceAndButtonDiv.appendChild(articlePrice);
+
+    // Unlock button div element
+    const unlockButtonDiv = createElementWithAttributes(
+      this.ampdoc.win.document,
+      'div',
+      {
+        class: TAG_SHORTHAND + '-btn-div',
+      }
+    );
+
     // Creating unlock button on paywall
     const unlockButton = createElementWithAttributes(
       this.ampdoc.win.document,
@@ -295,9 +326,30 @@ export class AmpAccessFewcents {
     );
 
     unlockButton.textContent = this.i18n_['fcButtonText'];
-    this.innerContainer_.appendChild(unlockButton);
+    this.unlockButtonListener_ = listen(unlockButton, 'click', (ev) => {
+      this.handlePurchase_(ev);
+    });
+    unlockButtonDiv.appendChild(unlockButton);
+    priceAndButtonDiv.appendChild(unlockButtonDiv);
 
     this.dialogContainer_.appendChild(this.innerContainer_);
     this.containerEmpty_ = false;
+  }
+
+  /**
+   * Open login dialog when click on unlock button
+   * @param {!Event} ev
+   * @private
+   */
+  handlePurchase_(ev) {
+    ev.preventDefault();
+    const urlPromise = this.accessSource_.buildUrl(
+      this.loginDialogUrl_,
+      /* useAuthData */ false
+    );
+
+    return urlPromise.then((url) => {
+      this.accessSource_.loginWithUrl(url);
+    });
   }
 }

@@ -57,3 +57,25 @@
   margin-top: 4px;
   color: rgb(8, 40, 154);
 }
+
+.aaf-price-btn-div {
+  display: flex;
+  place-content: center space-evenly;
+  align-items: center;
+  margin: 12px auto 0px;
+  max-width: 250px;
+}
+
+.aaf-article-price {
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  margin-right: 10px;
+  color: rgb(0, 0, 0);
+}
+
+.aaf-btn-div {
+  line-height: 1.2;
+  margin-top: 0.5 rem;
+  text-align: center;
+}
