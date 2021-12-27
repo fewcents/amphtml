@@ -1,3 +1,7 @@
+#amp-access-fewcents-dialog {
+  padding: 20px;
+}
+
 .aaf-container {
   height: auto;
   width: 70%;
@@ -106,4 +110,10 @@
 .aaf-partition-bar {
   font-size: 11px;
   margin: 0px 4px;
+}
+
+@media (max-width: 786px) {
+  #amp-access-fewcents-dialog {
+    width: 350px;
+  }
 }
