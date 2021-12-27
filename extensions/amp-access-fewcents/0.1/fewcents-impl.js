@@ -19,6 +19,7 @@ import {dict} from '#core/types/object';
 
 import {Services} from '#service';
 
+import {listen} from '#utils/event-helper';
 import {user} from '#utils/log';
 
 import {parseUrlDeprecated} from 'src/url';
@@ -234,7 +235,6 @@ export class AmpAccessFewcents {
    * @private
    */
   renderPurchaseOverlay_() {
-    // [TODO]: Create entire paywall element with button event listener for login flow
     this.dialogContainer_ = this.getPaywallContainer_();
     this.innerContainer_ = createElementWithAttributes(
       this.ampdoc.win.document,
@@ -244,7 +244,18 @@ export class AmpAccessFewcents {
       }
     );
 
-    // Creating header text of paywall
+    // Creating publisher logo for the paywall
+    const publisherLogo = createElementWithAttributes(
+      this.ampdoc.win.document,
+      'img',
+      {
+        class: TAG_SHORTHAND + '-imageTag',
+        src: this.fewcentsConfig_['publisherLogoUrl'],
+      }
+    );
+    this.innerContainer_.appendChild(publisherLogo);
+
+    // Creating header text
     const headerText = createElementWithAttributes(
       this.ampdoc.win.document,
       'div',
@@ -255,6 +266,24 @@ export class AmpAccessFewcents {
 
     headerText.textContent = this.i18n_['fcTitleText'];
     this.innerContainer_.appendChild(headerText);
+
+    // Creating already bought link
+    const alreadyBought = createElementWithAttributes(
+      this.ampdoc.win.document,
+      'a',
+      {
+        class: TAG_SHORTHAND + '-already-bought',
+        href: this.loginDialogUrl_,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      }
+    );
+
+    alreadyBought.textContent = this.i18n_['fcPromptText'];
+    this.alreadyPurchasedListener_ = listen(alreadyBought, 'click', (ev) => {
+      this.handlePurchase_(ev);
+    });
+    this.innerContainer_.appendChild(alreadyBought);
 
     // Creating unlock button on paywall
     const unlockButton = createElementWithAttributes(
