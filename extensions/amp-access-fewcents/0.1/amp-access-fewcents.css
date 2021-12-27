@@ -79,3 +79,12 @@
   margin-top: 0.5 rem;
   text-align: center;
 }
+
+.aaf-bottom-div {
+  display: flex;
+  align-items: center;
+}
+
+.aaf-fewcents-image-tag {
+  max-height: 45px;
+}

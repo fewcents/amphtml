@@ -332,6 +332,27 @@ export class AmpAccessFewcents {
     unlockButtonDiv.appendChild(unlockButton);
     priceAndButtonDiv.appendChild(unlockButtonDiv);
 
+    // 'div' element for reference row and fewcents logo
+    const bottomDiv = createElementWithAttributes(
+      this.ampdoc.win.document,
+      'div',
+      {
+        class: TAG_SHORTHAND + '-bottom-div',
+      }
+    );
+
+    // Creating fewcents logo for the paywall
+    const fewcentsLogo = createElementWithAttributes(
+      this.ampdoc.win.document,
+      'img',
+      {
+        class: TAG_SHORTHAND + '-fewcents-image-tag',
+        src: this.i18n_['fcPoweredImageRef'],
+      }
+    );
+    bottomDiv.appendChild(fewcentsLogo);
+    this.innerContainer_.appendChild(bottomDiv);
+
     this.dialogContainer_.appendChild(this.innerContainer_);
     this.containerEmpty_ = false;
   }
