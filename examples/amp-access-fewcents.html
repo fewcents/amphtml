@@ -33,298 +33,274 @@
         }
       }
     </script>
+    <style amp-custom>
+
+      h1, h2, h3, h4, h5, h6  {
+        font-family: "Segoe UI", Arial, sans-serif;
+        font-weight: 400;
+        margin: 10px 0px;
+      }
+      
+      h2 {
+        font-size: 30px;
+      }
+      
+      h3 {
+        font-size: 24px;
+      }
+      
+      h4 {
+        font-size: 20px;
+      }
+
+      span {
+        font-family: Verdana, sans-serif;
+        font-size: 15px;
+      }      
+
+      body {
+        font-family: Verdana, sans-serif;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+
+      .w3-padding {
+        padding: 32px !important;
+      }
+
+      .w3-grid {
+        display: grid;
+        grid-template-columns: 75% auto;
+        column-gap: 32px;
+      }
+
+      .w3-card, .w3-card-2 {
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+      }
+
+      .w3-card-4, .w3-hover-shadow:hover {
+        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      .w3-input {
+        padding: 8px;
+        display: block;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        width: 91%;
+      }
+      
+      .w3-margin-bottom {
+        margin-bottom: 16px !important;
+      }
+
+      .w3-border {
+        border: 1px solid #ccc !important;
+      }
+
+      .w3-round {
+        border-radius: 4px;
+      }
+
+      .w3-btn{
+        display: inline-block;
+        vertical-align: middle;
+        color: inherit;
+        background-color: inherit;
+        text-align: center;
+        cursor: pointer;
+        white-space: nowrap;
+        border-width: initial;
+        border-style: none;
+        border-color: initial;
+        border-image: initial;
+        padding: 8px 16px;
+        overflow: hidden;
+        text-decoration: none;
+      }
+      .w3-btn:hover {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      .w3-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.3;
+      }
+
+      .w3-blue,
+      .w3-hover-blue:hover {
+        color: #fff !important;
+        background-color: #2196f3 !important;
+      }
+
+      .fa {
+        font-size: 24px;
+        margin-right: 8px;
+      }
+    </style>
     <link rel="canonical" href="/examples/amp-access-fewcents.html">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
-    <style amp-custom>
-      amp-access-fewcents {
-        color: red;
-      }
-
-      .main-container {
-        height: auto;
-      }
-
-      .title {display: flex;align-items: center;justify-content: center;}
-
-      .title h1{
-        margin-bottom: 0px;
-      }
-
-      .navbar{
-        background-color: bisque;
-        border: black;
-        border-radius: 25px;
-        margin: 10px 10px;
-      }
-
-      .navbar-ul{
-        display: flex;
-        list-style-type: none;
-        margin-left: 10px;
-      }
-
-      .navbar-ul li{
-        background: burlywood;
-        padding: 10px;
-        margin-right: 10px;
-        font-size: 18px;
-        font-family: "Verdana, Geneva, Tahoma, sans-serif";
-      }
-
-      .content{
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-      }
-
-      .content p{
-        padding: 0px 160px;
-        font-size: 1.1875rem;
-        font-family: 'Noticia Text', serif;
-        line-height: 1.6;
-        margin-bottom: 30px;
-      }
-
-      .entry-thumbnail {
-        display: flex;
-        justify-content: center;
-      }
-
-      .premium-content{
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-      }
-
-      .premium-content p{
-        padding: 0px 160px;
-        font-size: 1.1875rem;
-        font-family: 'Noticia Text', serif;
-        line-height: 1.6;
-        margin-bottom: 30px;
-      }
-
-      .footer{
-        padding: 0px 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-        margin-top: 100px;
-        height: 30vh;
-        background: black;
-      }
-
-      .footer ul li {
-        color: blanchedalmond;
-      }
-
-      .footer ul h3 {
-        color: blanchedalmond;
-      }
-    </style>
     <script async custom-element="amp-access" src="https://cdn.ampproject.org/v0/amp-access-0.1.js"></script>
-    <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
+    <script async custom-element="amp-access-fewcents" src="https://cdn.ampproject.org/v0/amp-access-fewcents-0.1.js"></script>
     <script async src="https://cdn.ampproject.org/v0.js"></script>
   </head>
+
   <body>
-    <amp-analytics type="segment">
-      <script type="application/json">
-        {
-          "vars": {
-            "writeKey": "gNo9b6N79CFIFJqFyOCELKS6Ex0JcfBY",
-            "name": "fewcents-paywall"
-          },
-          "triggers": {
-            "click": {
-              "on": "click",
-              "selector": ".aaf-purchase-button",
-              "request": "track",
-              "vars": {
-                "event": "Unlock button clicked"
-              }
-            },
-            "accessauthorizationReceived": {
-              "on": "access-authorization-received",
-              "request": "track",
-              "vars": {
-                "event": "access-authorization-received"
-              },
-              "extraUrlParams": {
-                "properties.access": "AUTHDATA(access)",
-                "properties.data": "AUTHDATA(data)"
-              }
-            },
-            "accessAuthorizationFailed": {
-              "on": "access-authorization-failed",
-              "request": "track",
-              "vars": {
-                "event": "access-authorization-failed"
-              },
-              "extraUrlParams": {
-                "properties.access": "AUTHDATA(access)",
-                "properties.data": "AUTHDATA(data)"
-              }
-            },
-            "accessLoginStarted": {
-              "on": "access-login-started",
-              "request": "track",
-              "vars": {
-                "event": "access-login-started"
-              },
-              "extraUrlParams": {
-                "properties.access": "AUTHDATA(access)",
-                "properties.data": "AUTHDATA(data)"
-              }
-            },
-            "accessLoginSuccess": {
-              "on": "access-login-success",
-              "request": "track",
-              "vars": {
-                "event": "access-login-success"
-              },
-              "extraUrlParams": {
-                "properties.access": "AUTHDATA(access)",
-                "properties.data": "AUTHDATA(data)"
-              }
-            },
-            "accessLoginRejected": {
-              "on": "access-login-rejected",
-              "request": "track",
-              "vars": {
-                "event": "access-login-rejected"
-              },
-              "extraUrlParams": {
-                "properties.access": "AUTHDATA(access)",
-                "properties.data": "AUTHDATA(data)"
-              }
-            },
-            "accessLoginFailed": {
-              "on": "access-login-failed",
-              "request": "track",
-              "vars": {
-                "event": "access-login-failed"
-              },
-              "extraUrlParams": {
-                "properties.access": "AUTHDATA(access)",
-                "properties.data": "AUTHDATA(data)"
-              }
-            }
-          }
-        }
-      </script>
-    </amp-analytics>
-    <div class="main-container">
-      <div class="title">
-        <h1>Weekly Digest: Kyiv Post Closure, Anti-Oligarch Law in Ukraine</h1>
-      </div>
-      <div class="navbar">
-        <ul class="navbar-ul">
-          <li>Industry News</li>
-          <li>Business Model</li>
-          <li>About Us</li>
-        </ul>
-      </div>
-      <div class="content">
-        <div class="entry-thumbnail">
-          <img
-            width="518"
-            height="291"
-            src="./Weekly Digest_ Kyiv Post Closure, Anti-Oligarch Law in Ukraine - The Fix_files/the-fix-digest-16.png"
-            class="attachment-post-thumbnail size-post-thumbnail wp-post-image"
-            alt=""
-            loading="lazy"
-            srcset="
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16.png           5184w,
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16-300x169.png    300w,
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16-1024x576.png  1024w,
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16-768x432.png    768w,
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16-1536x864.png  1536w,
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16-2048x1152.png 2048w,
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16-1200x675.png  1200w,
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16-1260x709.png  1260w,
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16-800x450.png    800w,
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16-588x331.png    588w,
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16-107x60.png     107w,
-              http://wordpress.dev.fewcents.co/wp-content/uploads/2021/11/the-fix-digest-16-160x90.png     160w
-            "
-            sizes="(max-width: 5184px) 100vw, 5184px"
+    <section amp-access="access" amp-access-hide>
+      <div id="amp-access-fewcents-dialog"></div>
+    </section>
+
+    <main class="w3-padding">
+      <div class="w3-grid">
+        <section class="w3-card w3-padding">
+          <h2>Imagine, this is an article on publisher website...</h2>
+          <p>
+            I never loved you. Aww, it's true. I've been hiding it for so long.
+            You can see how I lived before I met you. Then throw her in the
+            laundry room, which will hereafter be referred to as "the brig".
+          </p>
+          <p>
+            Good news, everyone! There's a report on TV with some very bad news!
+            Good man.
+            <strong> Nixon's pro-war and pro-family.</strong>
+            <em>
+              Whoa a real live robot; or is that some kind of cheesy New Year's
+              costume?</em
+            >
+            How much did you make me?
+          </p>
+          <h4>
+            Oh dear! She's stuck in an infinite loop, and he's an idiot! Well,
+            that's love for you.
+          </h4>
+          <p>
+            With gusto. Then throw her in the laundry room, which will hereafter
+            be referred to as "the brig". Ven ve voke up, ve had zese wodies.
+            Um, is this the boring, peaceful kind of taking to the streets? I'm
+            sorry, guys. I never meant to hurt you. Just to destroy everything
+            you ever believed in.
+          </p>
+          <ol>
+            <li>
+              Whoa a real live robot; or is that some kind of cheesy New Year's
+              costume?
+            </li>
+            <li>
+              I saw you with those two "ladies of the evening" at Elzars.
+              Explain that.
+            </li>
+            <li>
+              You won't have time for sleeping, soldier, not with all the bed
+              making you'll be doing.
+            </li>
+          </ol>
+
+          <h3>
+            Yes, if you make it look like an electrical fire. When you do things
+            right, people won't be sure you've done anything at all.
+          </h3>
+          <p>
+            I'm a thing. Negative, bossy meat creature! Son, as your lawyer, I
+            declare y'all are in a 12-piece bucket o' trouble. But I done struck
+            you a deal: Five hours of community service cleanin' up that ol'
+            mess you caused.
+          </p>
+          <ul>
+            <li>Kids have names?</li>
+            <li>No, just a regular mistake.</li>
+            <li>Hello Morbo, how's the family?</li>
+          </ul>
+
+          <p>
+            I've got to find a way to escape the horrible ravages of youth.
+            Suddenly, I'm going to the bathroom like clockwork, every three
+            hours. And those jerks at Social Security stopped sending me checks.
+            Now 'I'' have to pay ''them'! Why did you bring us here?
+          </p>
+          <p>
+            That's a popular name today. Little "e", big "B"? OK, if everyone's
+            finished being stupid. Then throw her in the laundry room, which
+            will hereafter be referred to as "the brig". Um, is this the boring,
+            peaceful kind of taking to the streets?
+          </p>
+          <p>
+            Bender, being God isn't easy. If you do too much, people get
+            dependent on you, and if you do nothing, they lose hope. You have to
+            use a light touch. Like a safecracker, or a pickpocket. Hey, whatcha
+            watching?
+          </p>
+          <p>
+            Okay, I like a challenge. Yes, I saw. You were doing well, until
+            everyone died. As an interesting side note, as a head without a
+            body, I envy the dead. Yes. You gave me a dollar and some candy. Oh
+            yeah, good luck with that.
+          </p>
+          <p>
+            I am the man with no name, Zapp Brannigan! No, of course not. It
+            was… uh… porno. Yeah, that's it. Why yes! Thanks for noticing. These
+            old Doomsday Devices are dangerously unstable. I'll rest easier not
+            knowing where they are.
+          </p>
+          <p>
+            Hey, guess what you're accessories to. Oh, I always feared he might
+            run off like this. Why, why, why didn't I break his legs? No, of
+            course not. It was… uh… porno. Yeah, that's it. I wish! It's a
+            nickel.
+          </p>
+          <p>
+            Is that a cooking show? Hey, guess what you're accessories to. Now
+            what? Pansy. You lived before you met me?! Take me to your leader!
+          </p>
+          <p>
+            This is the worst kind of discrimination: the kind against me! The
+            key to victory is discipline, and that means a well made bed. You
+            will practice until you can make your bed in your sleep. I'll tell
+            them you went down prying the wedding ring off his cold, dead
+            finger.
+          </p>
+          <p>
+            Ooh, name it after me! Professor, make a woman out of me. No
+            argument here. Bender, you risked your life to save me! Wow, you got
+            that off the Internet? In my day, the Internet was only used to
+            download pornography.
+          </p>
+          <p>
+            There's no part of that sentence I didn't like! Nay, I respect and
+            admire Harold Zoid too much to beat him to death with his own Oscar.
+            Kif, I have mated with a woman. Inform the men. Kif, I have mated
+            with a woman. Inform the men.
+          </p>
+          <p>
+            What are their names? We're also Santa Claus! Ow, my spirit! Yeah,
+            and if you were the pope they'd be all, "Straighten your pope hat."
+            And "Put on your good vestments." We'll need to have a look inside
+            you with this camera.
+          </p>
+        </section>
+        <section
+          class="w3-card w3-padding"
+          style="text-align: center; display: flex; flex-direction: column"
+        >
+          <input
+            type="text"
+            id="customerName"
+            class="w3-input w3-margin-bottom w3-border w3-round"
           />
-        </div>
-        <p>
-          Welcome to The Fix’s weekly news digest! Every week, we bring you
-          important news stories from the world of media – and try to put them
-          in a wider context.
-        </p>
-        <p>
-          This week, we have two detailed stories on the recent media shakeup in
-          Ukraine and a roundup of other noteworthy media news.
-        </p>
-        <p>
-          The closure appears to be a continuation of the conflict between the
-          publisher and the editorial team, particularly over the plans to
-          launch a Ukrainian-language outlet under the paper’s brand. Analysts
-          also say the move might be the owner’s attempt to avoid angering the
-          authorities – whom Kivan’s construction business depends on – over
-          Kyiv Post’s coverage.
-        </p>
+          <button
+            id="btnPaywall"
+            class="w3-btn w3-blue w3-round w3-margin-bottom"
+          >
+            <i class="fa fa-gift"></i>
+            <span> Launch Paywall</span>
+          </button>
+
+          <button id="btnTipjar" class="w3-btn w3-blue w3-round">
+            <i class="fa fa-gift"></i>
+            <span> Launch Tipjar</span>
+          </button>
+        </section>
       </div>
-      <section amp-access="NOT access OR flash" amp-access-hide>
-        <div id="amp-access-fewcents-dialog"></div>
-      </section>
-
-      <section amp-access="error" amp-access-hide class="error-section">
-        Oops... Something broke.
-      </section>
-
-      <div amp-access="access" amp-access-hide class="premium-content">
-        <p>
-          Perhaps the most notable media news story in the CEE region came from
-          Ukraine this week with the closure of Kyiv Post, the country’s leading
-          English-language publication.
-        </p>
-
-        <p>
-          Over the past several decades, it has been a trusted source of news
-          and a lodestar of independent journalism. However, on Monday the
-          paper’s owner, construction tycoon Adnan Kivan, announced the outlet
-          will close “for a short time,” saying he hopes to reopen it “bigger
-          and better” in the future.
-        </p>
-        <p>
-          Kyiv Post’s editorial team then released a statement clarifying that
-          all journalists were fired effective immediately. The journalists
-          called the actions “an act of vengeance” by the owner and an attempt
-          to “[get] rid of inconvenient, fair and honest journalists.”
-        </p>
-        <p>
-          The closure has attracted multiple concerned comments from Kyiv Post
-          readers, which include high-level foreign diplomats, expats, and
-          business leaders. In an interview with Columbia Journalism Review, the
-          paper’s now-former chief editor Brian Bonner said he is “talking to
-          deeply concerned ambassadors.”
-        </p>
-      </div>
-
-      <div class="footer">
-        <ul>
-          <h3 class="footer-widget-title">Follow Us</h3>
-          <li>Twitter</li>
-          <li>Facebook</li>
-          <li>Linkedin</li>
-          <li>Telegram</li>
-          <li>Deutsch</li>
-        </ul>
-        <ul>
-          <h3 class="footer-widget-title">Menu</h3>
-          <li>Industry News</li>
-          <li>Business models</li>
-          <li>Organization building</li>
-          <li>Research</li>
-          <li>Advertise on The Fix</li>
-          <li>About us</li>
-        </ul>
-      </div>
-    </div>
+    </main>
   </body>
 </html>
